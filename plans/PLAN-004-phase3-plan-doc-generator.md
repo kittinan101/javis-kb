@@ -59,36 +59,40 @@ classification: internal
 - **AC:** plan ที่ได้ผ่าน `node scripts/validate-frontmatter.mjs`, มี AC ทดสอบได้ทุก task, อ้างอิง component ที่มีจริงใน KB เท่านั้น
 
 #### T1.3 Approval workflow (ปุ่มในแชท)
-- [ ] plan ใหม่ → n8n ส่งข้อความหา role Lead/SA + PM/PO พร้อมปุ่ม Approve / Request changes (LINE Flex postback / Telegram inline_keyboard)
-- [ ] เช็คสิทธิ์: เฉพาะ LEAD_SA และ PM_PO กด approve ได้ — ครบทั้ง 2 role = สถานะ approved
-- [ ] เขียนกลับเข้าไฟล์: frontmatter `status: approved` + Approvals section เติม `<ผู้ approve> — <เวลา>` ทุกคน
-- [ ] Request changes → กลับสู่ multi-turn แก้ plan → เปิด approve รอบใหม่
+- [ ] plan ใหม่ → n8n ส่ง**สรุปย่อในแชท** (scope, impact, risk, ขนาดงาน) + ลิงก์/PDF ฉบับเต็มหา Lead/SA + PM/PO พร้อมปุ่ม Approve / Request changes — อย่าบังคับ approver อ่าน 7 sections บน GitHub mobile (= rubber-stamp)
+- [ ] **Approval state เก็บใน javis-core DB เป็น source of truth** (plan_id, role, user, ts, decision, reason) — ไฟล์เป็น mirror ที่ materialize เมื่อครบเงื่อนไข: แก้ race 2 คนกดพร้อมกัน (last-writer-wins ทับ approval หาย) + **กันการแก้ `status:` ในไฟล์เองแล้วระบบหลงเชื่อ** (Dev Agent ตรวจกับ DB เสมอ — ดู PLAN-005 T2.2)
+- [ ] เช็คสิทธิ์: LEAD_SA + PM_PO ครบ 2 role = approved; **plan `risk: medium` ขึ้นไปหรือจะป้อนเข้า Dev Agent ต้องผ่าน QA review AC ก่อน** (ยืนยันว่า acceptance criteria ทดสอบได้จริงและมีเจ้าของฝั่งคน — ปิดช่อง "AI เขียน AC เอง ตรวจเอง")
+- [ ] Request changes → บังคับกรอกเหตุผล → ส่งกลับหา **requester** (เจ้าของรอบแก้ชัดเจน) → แก้ → เปิด approve รอบใหม่
+- [ ] ทุก callback ตรวจ state ปัจจุบันก่อน apply — ปุ่มเก่า/กดซ้ำ → "ดำเนินการแล้วโดย X เมื่อ Y"
 - [ ] ทุก action ลง `AuditLog`
-- **AC:** Lead กดคนเดียว → ยัง draft; ครบ 2 role → ไฟล์ใน git เปลี่ยนเป็น approved + มีชื่อ+เวลาใน Approvals; QA ลองกด → ถูกปฏิเสธ
+- **AC:** Lead กดคนเดียว → ยัง draft; ครบ 2 role → DB approved + ไฟล์ mirror ตาม พร้อมชื่อ+เวลา+เหตุผล; QA/Developer กด approve → ถูกปฏิเสธ; แก้ `status: approved` ในไฟล์ตรงๆ → ระบบไม่เชื่อ (DB ไม่ตรง = ไม่ approved); กดปุ่มบนข้อความเก่า → ได้คำตอบ state ปัจจุบัน
 
 ### สัปดาห์ 2 — PDF Pipeline + BRD
 
 #### T2.1 PDF pipeline (Typst + Sarabun)
-- [ ] ติดตั้ง `typst` + `pandoc` + ฟอนต์ Sarabun บนเครื่องที่รัน pipeline
-- [ ] สร้าง `templates/pdf/template.typ`:
+- [ ] **Prerequisite — กำหนด host ที่รัน pandoc/typst:** Mac mini มาใน Phase 4 ดังนั้น phase นี้ใช้ container ข้างเครื่อง n8n (หรือตั้ง Mac mini ล่วงหน้าแบบ minimal) — บันทึกเป็น ADR (sequencing gap จาก review: เดิมแผนอ้างเครื่องที่ยังไม่มี)
+- [ ] **Thai PDF spike เป็นงานแรกของ phase:** พิสูจน์ Typst ตัดคำ/ตัดบรรทัดไทย + วรรณยุกต์ กับเอกสารจริง ก่อนลงทุนทั้ง pipeline
+- [ ] ติดตั้ง `typst` + `pandoc` + ฟอนต์ Sarabun บน host ที่กำหนด
+- [ ] สร้าง **pandoc-typst template** `templates/pdf/template.typ` (ต้องมี `$body$` — raw Typst set-rules เฉยๆ ใช้กับ `--template` ไม่ได้):
 ```typst
 #set text(font: "Sarabun", size: 11pt, lang: "th")
 #set page(paper: "a4", margin: 2.5cm, numbering: "1")
+$body$
 ```
-- [ ] ทดสอบ: `pandoc test.md -o test.pdf --pdf-engine=typst --template=template.typ` ด้วยเอกสารไทยที่มีตาราง + code block + หัวข้อซ้อน
+- [ ] ทดสอบ: `pandoc test.md -o test.pdf --pdf-engine=typst --template=template.typ` ด้วย **golden samples ไทย 3 ไฟล์** (ตาราง + code block + หัวข้อซ้อน) + checklist ที่คนที่สองตรวจซ้ำได้ผลเดียวกัน (heading ครบ / ตารางไม่ล้น / สระ-วรรณยุกต์ตำแหน่งถูก)
 - [ ] เพิ่ม header/logo องค์กร + เลข version + วันที่ ใน template
 - **AC:** PDF ไทยสระ/วรรณยุกต์ไม่เพี้ยน, ตารางไม่ล้นหน้า, มี page number + version
 
 #### T2.2 BRD Generator
 - [ ] intent `gendoc` ประเภท BRD → รวบรวม requirement + plan + decisions ที่เกี่ยวกับ feature จาก KB → Claude gen ตาม BRD template (สร้าง `templates/brd.md`: Executive Summary, Business Objectives, Scope, Functional Requirements, Non-functional, Assumptions, Approval)
 - [ ] เนื้อหามาจาก KB เท่านั้น — ข้อมูลไม่ครบให้ระบุ gap ชัดเจนในเอกสาร ("ยังไม่มีข้อมูล: ...") ห้ามเดา
-- [ ] Markdown ต้นฉบับเก็บเข้า repo (`features/` หรือโฟลเดอร์ของ feature) + gen PDF ส่งกลับแชทเป็นไฟล์แนบ
-- **AC:** ขอ BRD ของ feature ที่มีข้อมูลใน KB → ได้ PDF สมบูรณ์ + Markdown ใน repo; feature ที่ข้อมูลไม่ครบ → PDF ระบุ gap ไม่มีเนื้อหาเดา
+- [ ] Markdown ต้นฉบับเก็บเข้า repo (`features/` หรือโฟลเดอร์ของ feature) + ส่ง PDF กลับแชท: **Telegram = `sendDocument` (แนบไฟล์ได้จริง) / LINE = แนบไฟล์ไม่ได้ (message type ไม่มี file) → ส่งลิงก์ดาวน์โหลด** — เพิ่ม task PDF hosting (GitHub release/artifact + URL)
+- **AC:** ขอ BRD ผ่าน Telegram → ได้ไฟล์ PDF ในแชท; ผ่าน LINE → ได้ลิงก์ที่เปิดโหลดได้จริง; feature ที่ข้อมูลไม่ครบ → PDF ระบุ gap ไม่มีเนื้อหาเดา
 
 ### สัปดาห์ 3 — Doc Generator ที่ผูกกับ code (เตรียมรอ Phase 4)
 
 #### T3.1 API Spec pipeline (script พร้อมใช้)
-- [ ] เขียน script ใน code repo template: Zod schema → `@asteasolutions/zod-to-openapi` → `/api/openapi.json` → `widdershins` → Markdown → เข้า PDF pipeline
+- [ ] เขียน script ใน code repo template: Zod schema → `@asteasolutions/zod-to-openapi` → `/api/openapi.json` → **gen Markdown ด้วย script ของเราเอง** (widdershins หยุด maintain โดยพฤตินัยมาหลายปี — generator เล็กๆ อ่าน openapi.json เองงานไม่ใหญ่และคุมรูปแบบได้) → เข้า PDF pipeline
 - [ ] ทดสอบกับ project ตัวอย่าง Next.js เล็กๆ 2 endpoints
 - **AC:** รัน 1 คำสั่งจาก openapi.json → ได้ Markdown + PDF โครงสร้างถูก (endpoint, request/response, auth)
 
