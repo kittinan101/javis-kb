@@ -78,7 +78,7 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 ```
 - [ ] เพิ่มตาราง `FeedbackLog(job_id, question, answer, rating, cited_docs, ts)`, `AuditLog(job_id, ts, stage, level, event, javis_user_id, detail)`, `CostLog(job_id, ts, model, cost_usd)`
 - [ ] seed `SystemConfig`: `rate_limit_qa_per_hour=20`, `session_ttl_minutes=30`, `max_budget_per_job_usd=8`, `agent_enabled=true`
-- [ ] **Schema อยู่ใน version control:** เก็บ `schema.prisma` + migrations ของ javis-core ใน repo แยก `javis-core` (apply ผ่าน `prisma migrate` เท่านั้น ห้ามแก้ DB มือ — กัน drift เมื่อ schema โตทุก phase) + ระบุ index: `AuditLog(job_id)`, `AuditLog(ts)`, `CostLog(ts)`
+- [x] **Schema อยู่ใน version control:** repo `kittinan101/javis-core` สร้างแล้ว (2026-07-18 ผ่าน n8n one-shot) — schema.prisma ครบ 9 ตาราง Phase 1 + snake_case @@map + indexes + seed.sql + README วิธี apply — **เหลือ: คุณรัน `CREATE DATABASE javis_core` + `npx prisma migrate dev --name init` + seed จากเครื่องที่ถึง Postgres บน NAS** (ขั้นตอนใน README ของ repo)
 - [ ] ลงทะเบียนทีมเข้า `User` + กำหนด role ตาม Roster (T1.5) — ส่วน `ChatIdentity` mapping ใช้ register flow ใน T2.3 (ไม่ต้อง insert มือ)
 - **AC:** ตารางครบ, unique constraint ทำงาน (insert ซ้ำ channel+channelUserId ต้อง error), config seed ครบ 4 ค่า, schema ทั้งหมด reproduce ได้จาก migrations
 
