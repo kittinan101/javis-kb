@@ -30,6 +30,15 @@ classification: internal
 
 **ช่องทางทำงานกับ KB ตอนนี้:** อ่าน = GitHub MCP | เขียน = n8n "Javis KB - Push files (utility)"
 
+**LINE OA mapping (แยกกันเด็ดขาด — ยืนยันด้วย `GET /v2/bot/info` ทั้งคู่ 2026-07-18):**
+
+| OA | basicId | ใช้กับ | n8n credential |
+|---|---|---|---|
+| Holmcloud | `@212oeopz` | taskbot (AI Bot Assistant — POC ที่รันอยู่) | `Bearer Auth LINE` |
+| Holm Agents | `@422vjcem` | **Javis** (Phase 1 Q&A เป็นต้นไป) | `Auth LINE Holm Agents` |
+
+กติกา: workflow ของ Javis ห้ามแตะ credential/webhook ของ Holmcloud และกลับกัน — channel secret ก็แยก env คนละตัว (`LINE_CHANNEL_SECRET_HOLM_AGENTS` สำหรับ Javis)
+
 ## แผนงานเต็มทุก Phase — ดู PLAN-001 ถึง PLAN-005
 
 > 2026-07-18: ออกแบบ plan ล่วงหน้าครบทุก step แล้ว — task breakdown เต็มอยู่ในไฟล์เหล่านี้:
