@@ -56,3 +56,4 @@ classification: internal
 | 2026-07-18 | เริ่ม PLAN-002: T1.1 glossary เสร็จ (+35 คำ), T1.2 import 2 ไฟล์แรก (DOM-002 vision, DOM-003 impl spec) — งานถัดไป: import System Design Phase 1 + เอกสารทีม, เติม Roster/Budget (T1.5) |
 | 2026-07-18 | เพิ่ม Claude Code SessionStart hook (`.claude/settings.json`) inject standing workflow (review 9 มุม → แบ่ง commit → update status → ทำ task ต่อ) จาก `.claude/workflow-instructions.md` ทุก session |
 | 2026-07-18 | T1.2 ต่อ: import System Design Phase 1 (→ `domains/taskbot/`) + Wiki ทีม 3 ไฟล์ (engineering standards, QA guidelines, onboarding — ยังเป็นโครง ⚠️ รอทีมเติม) — KB รวม 15 ไฟล์ผ่าน validation |
+| 2026-07-18 | T1.6 draft: `templates/chat/message-catalog.md` — message catalog + flow diagram ครบ intent Phase 1 (qa/register/help) — **รอทีม review 1 รอบก่อนเริ่ม build สัปดาห์ 2** |

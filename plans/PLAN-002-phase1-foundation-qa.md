@@ -89,11 +89,11 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 - [ ] **Privacy notice (PDPA):** แจ้งทีมว่าระบบเก็บ chat log/userId อะไรบ้าง เก็บนานเท่าไหร่ + บันทึกการประเมิน processor ภายนอก (Anthropic/LINE/Telegram)
 - **AC:** Roster ครบทุก role ไม่มีช่องว่าง, budget มีผู้อนุมัติจริง, ผล baseline survey เก็บใน KB
 
-#### T1.6 Conversation Design Spec (ก่อน build bot)
-- [ ] สร้าง `templates/chat/` — message catalog ทุก state: welcome ต่อ channel, ack, error/timeout, permission-denied, rate-limit, register pending/approved, ปุ่มทุกแบบ + tone of voice เดียวกันทั้งระบบ
-- [ ] Flow diagram ต่อ intent (qa/register/help — phase นี้) ให้ review ได้ก่อนลงมือใน n8n
-- [ ] n8n อ่าน copy จาก template ที่เดียว — แก้ข้อความได้โดยไม่แตะ workflow
-- **AC:** ทุกข้อความที่ bot ส่งมาจาก catalog (ไม่มี copy ฝังใน Code node), catalog ผ่าน review 1 รอบก่อนสัปดาห์ 2
+#### T1.6 Conversation Design Spec (ก่อน build bot) 🔄 (2026-07-18: draft แรกเสร็จ — รอ review)
+- [x] สร้าง `templates/chat/message-catalog.md` — message catalog ทุก state (welcome/register, help ตาม role, Q&A ทุก state รวม error/timeout/rate-limit/session-expiry/injection, feedback, permission/admin, ปุ่มกดซ้ำ) + tone of voice
+- [x] Flow diagram ต่อ intent (qa/register/help) — mermaid ใน catalog
+- [ ] n8n อ่าน copy จาก template ที่เดียว — ทำตอน build workflow จริง (สัปดาห์ 2)
+- **AC:** ทุกข้อความที่ bot ส่งมาจาก catalog (ไม่มี copy ฝังใน Code node), **catalog ผ่าน review 1 รอบก่อนสัปดาห์ 2 ← ค้างอยู่ที่ทีม review**
 
 ### สัปดาห์ 2 — Single-channel Q&A (LINE ก่อน)
 
