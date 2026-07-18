@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Javis KB Frontmatter Schema",
+  "description": "ทุกไฟล์ .md ใน domains/, features/, plans/, guides/ ต้องมี frontmatter ตาม schema นี้",
+  "type": "object",
+  "required": ["title", "id", "domain", "type", "status", "lang", "owners", "updated", "classification"],
+  "properties": {
+    "title": { "type": "string", "minLength": 3 },
+    "id": {
+      "type": "string",
+      "pattern": "^(FEAT|PLAN|ADR|GUIDE|DOM)-[0-9]{3,}(-[a-z0-9-]+)?$",
+      "description": "เช่น FEAT-042, ADR-001, PLAN-123, GUIDE-007, DOM-001"
+    },
+    "domain": { "type": "string", "minLength": 2 },
+    "type": { "enum": ["feature", "adr", "api", "guide", "plan", "overview", "meeting-note"] },
+    "status": { "enum": ["draft", "approved", "in_progress", "shipped", "done", "deprecated"] },
+    "lang": { "enum": ["th", "en", "mixed"] },
+    "owners": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "related": { "type": "array", "items": { "type": "string" } },
+    "figma": { "type": "string", "pattern": "^https://(www\\.)?figma\\.com/" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "updated": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "YYYY-MM-DD"
+    },
+    "classification": { "enum": ["internal"] },
+    "has_migration": { "type": "boolean" },
+    "risk": { "enum": ["low", "medium", "high"] }
+  },
+  "additionalProperties": true
+}
