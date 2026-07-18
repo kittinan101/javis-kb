@@ -1,8 +1,15 @@
 ---
-title: Javis AI — Setup Plan & Checklist
-status: active
-owner: kittinan101
+title: "Javis AI — Setup Plan & Checklist"
+id: PLAN-000
+domain: javis
+type: plan
+status: in_progress
+lang: th
+owners: ["kittinan101"]
+related: ["PLAN-001", "PLAN-002"]
+tags: ["setup", "checklist", "living-document"]
 updated: 2026-07-18
+classification: internal
 ---
 
 # Javis AI — Setup Plan & Checklist
@@ -23,14 +30,15 @@ updated: 2026-07-18
 
 **ช่องทางทำงานกับ KB ตอนนี้:** อ่าน = GitHub MCP | เขียน = n8n "Javis KB - Push files (utility)"
 
-## Phase 2 — Content ingestion (ถัดไป)
+## แผนงานเต็มทุก Phase — ดู PLAN-001 ถึง PLAN-005
 
-- [ ] กำหนดรายการเอกสารทีมที่จะ import เข้า `domains/`, `guides/`, `features/` (TBD — รอคุยกัน)
-- [ ] Import เอกสารชุดแรกผ่าน utility workflow
+> 2026-07-18: ออกแบบ plan ล่วงหน้าครบทุก step แล้ว — task breakdown เต็มอยู่ในไฟล์เหล่านี้:
 
-## Phase 3 — Javis Q&A wiring (TBD)
-
-- [ ] ออกแบบ flow ให้ Javis ดึงความรู้จาก KB มาตอบคำถามทีม (รายละเอียดรอกำหนด)
+- [PLAN-001 — Master Roadmap](PLAN-001-master-roadmap.md) (ภาพรวม + dependency + เกณฑ์ผ่านทุก Phase)
+- [PLAN-002 — Phase 1: Foundation + Q&A Bot](PLAN-002-phase1-foundation-qa.md) ← **ถัดไป: เริ่มที่นี่** (รวม content ingestion จาก Notion ใน T1.2)
+- [PLAN-003 — Phase 2: Team Upload + Impact Analysis + Figma](PLAN-003-phase2-upload-impact-figma.md)
+- [PLAN-004 — Phase 3: Plan Generator + Doc Generator](PLAN-004-phase3-plan-doc-generator.md)
+- [PLAN-005 — Phase 4: Autonomous Dev Agent](PLAN-005-phase4-dev-agent.md)
 
 ---
 
@@ -42,3 +50,4 @@ updated: 2026-07-18
 | 2026-07-18 | พบบั๊ก utility workflow ไม่ใส่ base_tree ทำให้ commit `a64004e` ทำ starter หลุดจาก HEAD → แก้ workflow + commit กู้ไฟล์คืนครบ |
 | 2026-07-18 | เพิ่ม plans/setup-checklist.md (ไฟล์นี้) |
 | 2026-07-18 | GitHub MCP เชื่อม `javis-kb` สำเร็จ (อ่านได้; เขียนยัง 403 read-only) — Phase 1 ปิดจ๊อบ 🎉 |
+| 2026-07-18 | ออกแบบ plan ทุก Phase ล่วงหน้า (PLAN-001..005) + แก้ frontmatter ไฟล์นี้ให้ผ่าน CI schema |
