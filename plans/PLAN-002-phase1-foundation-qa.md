@@ -120,7 +120,7 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 - [ ] **Register flow ครบวงจร:** user แปลกหน้าทัก → สร้าง pending identity → notify Admin อัตโนมัติพร้อมปุ่มอนุมัติ role ใน 1 กด → ตอบ user "ส่งคำขอแล้ว รออนุมัติ" (แก้ปัญหา Admin ต้องหา LINE userId + insert DB มือด้วย)
 - **AC:** user ที่ map แล้วได้ role ถูกต้อง; user แปลกหน้าถาม Q&A → ถูกปฏิเสธ + เข้า register flow; Admin กดอนุมัติ → ใช้งานได้ทันทีไม่ต้องแตะ DB
 
-#### T2.4 Q&A flow (หัวใจของ Phase 1)
+#### T2.4 Q&A flow (หัวใจของ Phase 1) 🔄 (2026-07-18: **แกน Q&A ทำงานแล้ว** — workflow "Javis - QA Flow (test)" ตาม [ADR-003](../domains/javis/decisions/ADR-003-interim-kb-retrieval.md): whole-KB ผ่าน GitHub API + claude-sonnet-5 + citations + prompt cache — ผ่าน smoke test positive+negative; ยังไม่เสียบ gateway รอ T2.3 RBAC)
 - [ ] **KB sync mechanism (gap ที่จะติดตั้งแต่วันแรก):** local clone ของ repo นี้บนเครื่องเดียวกับ n8n + `git pull` ทุก 5 นาที (หรือ trigger จาก GitHub push webhook) — นิยามให้ชัดว่า n8n เข้าถึงไฟล์ทางไหน + AC freshness: เอกสารใหม่ค้นเจอภายใน ≤ 10 นาที
 - [ ] ดึงเอกสารจาก repo นี้: normalize คำถามด้วย glossary (map ไทย↔อังกฤษ) → ค้นด้วย keyword ทั้ง 2 ภาษา + filter ด้วย frontmatter (`domain`, `tags`, `status != deprecated`)
 - [ ] เรียก Claude API: document blocks + `citations: {enabled: true}` + `cache_control: {type: "ephemeral"}` บนเอกสาร
