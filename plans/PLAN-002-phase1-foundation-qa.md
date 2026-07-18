@@ -97,7 +97,7 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 
 ### สัปดาห์ 2 — Single-channel Q&A (LINE ก่อน)
 
-#### T2.1 LINE bot + webhook
+#### T2.1 LINE bot + webhook 🔄 (2026-07-18: workflow "Javis - LINE Gateway (Holm Agents)" สร้างแล้วใน n8n — webhook path `/webhook/javis-line`, HMAC verify + 403/200 + Normalizer + dedup placeholder ครบ, smoke test ผ่าน — รอ: env `LINE_CHANNEL_SECRET_HOLM_AGENTS` + OA สลับ bot mode แล้วค่อย publish + ทดสอบ AC จริง)
 - [ ] สร้าง LINE OA + Messaging API channel → เก็บ channel secret / access token ใน **n8n Credentials เท่านั้น**
 - [ ] n8n Webhook node ตั้ง **Respond: Using "Respond to Webhook" node + เปิด Raw Body** — (Respond Immediately ใช้ไม่ได้: จะตอบ 200 ก่อนตรวจ signature และ body ที่ parse แล้วคำนวณ HMAC ไม่ได้)
 - [ ] Code node ตรวจ `x-line-signature` = HMAC-SHA256(channel secret, raw body) — ไม่ตรง → ตอบ 403 จบ flow / ตรง → ตอบ 200 แล้วทำงานต่อ async
