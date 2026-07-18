@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat .claude/workflow-instructions.md",
+            "timeout": 10,
+            "statusMessage": "Loading javis-kb standing workflow"
+          }
+        ]
+      }
+    ]
+  }
+}

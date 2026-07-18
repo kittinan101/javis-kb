@@ -3,3 +3,5 @@ package.json
 package-lock.json
 *.pdf
 .DS_Store
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
