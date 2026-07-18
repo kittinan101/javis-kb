@@ -54,3 +54,4 @@ classification: internal
 | 2026-07-18 | ติดตั้ง pre-commit hook (gitleaks 8.30.1 + validator) บนเครื่อง dev + เพิ่ม .gitignore |
 | 2026-07-18 | Design review รอบ 1 — 9 มุม (dev/frontend/backend/uxui/QA/tech lead/dev lead/PM/BA) โดย reviewer อิสระ 5 กลุ่ม → blocker 13 + major ~30 → แก้เข้า plan ครบ ดู [ADR-002](../domains/javis/decisions/ADR-002-design-review-round1.md) — **ก่อนเริ่ม PLAN-002 ต้องเติม Roster/Capacity/Budget จริง (PLAN-001 §4)** |
 | 2026-07-18 | เริ่ม PLAN-002: T1.1 glossary เสร็จ (+35 คำ), T1.2 import 2 ไฟล์แรก (DOM-002 vision, DOM-003 impl spec) — งานถัดไป: import System Design Phase 1 + เอกสารทีม, เติม Roster/Budget (T1.5) |
+| 2026-07-18 | เพิ่ม Claude Code SessionStart hook (`.claude/settings.json`) inject standing workflow (review 9 มุม → แบ่ง commit → update status → ทำ task ต่อ) จาก `.claude/workflow-instructions.md` ทุก session |
