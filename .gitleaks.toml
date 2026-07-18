@@ -1,0 +1,40 @@
+# .gitleaks.toml — ต้องใช้ gitleaks >= v8.25.0
+# สแกน 3 จุด: pre-commit hook, CI, และบน runner ก่อน commit
+
+[extend]
+useDefault = true # เปิด default rules ทั้งหมด (AWS, GitHub token, private key ฯลฯ)
+
+[[rules]]
+id = "thai-national-id"
+description = "เลขบัตรประชาชนไทย 13 หลัก (จับรูปแบบ ไม่ตรวจ checksum — อาจมี false positive)"
+regex = '''\b[0-9]{1}[- ]?[0-9]{4}[- ]?[0-9]{5}[- ]?[0-9]{2}[- ]?[0-9]{1}\b'''
+tags = ["pii", "thailand"]
+
+[[rules]]
+id = "thai-phone"
+description = "เบอร์โทรศัพท์มือถือไทย"
+regex = '''\b0[689][0-9][- ]?[0-9]{3}[- ]?[0-9]{4}\b'''
+tags = ["pii", "thailand"]
+
+[[rules]]
+id = "internal-db-url"
+description = "Database connection string ที่มี password"
+regex = '''(?i)(postgres|postgresql|mysql)://[^:\s]+:([^@\s]+)@[^\s]+'''
+secretGroup = 2
+tags = ["credential"]
+
+[[allowlists]]
+description = "ไฟล์/โฟลเดอร์ที่ไม่ต้องสแกน"
+paths = [
+  '''node_modules/''',
+  '''\.env\.example$''',
+  '''templates/''',           # template มีตัวอย่าง placeholder
+  '''\.gitleaks\.toml$''',
+]
+
+[[allowlists]]
+description = "ค่า placeholder ที่ยอมรับได้"
+regexes = [
+  '''0[689]X[- ]?XXX[- ]?XXXX''',
+  '''postgres://user:password@localhost''',
+]

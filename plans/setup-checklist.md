@@ -14,6 +14,7 @@ updated: 2026-07-18
 - [x] สร้าง private repo `kittinan101/javis-kb` (2026-07-18, ผ่าน n8n + GitHub PAT)
 - [x] Push starter 18 ไฟล์ — commit `75d2381` "chore: init javis-kb starter" (2026-07-18)
 - [x] สร้าง n8n workflow ถาวร **"Javis KB - Push files (utility)"** (id: `qfYKrBJkXqKUlNyB`) สำหรับ push เอกสารเข้า KB (2026-07-18)
+- [x] แก้บั๊ก utility workflow: เพิ่ม `base_tree` กันไฟล์เดิมหลุดจาก HEAD (2026-07-18)
 - [x] Archive one-shot setup workflows ที่ซ้ำ 5 ตัวใน n8n (2026-07-18)
 - [x] เพิ่มไฟล์ plan/checklist นี้เข้า repo (2026-07-18)
 - [ ] **[รอ user ทำเอง]** เพิ่ม `javis-kb` เข้า GitHub MCP installation ที่ github.com/settings/installations (เลือก repo เพิ่ม หรือเปลี่ยนเป็น All repositories)
@@ -34,4 +35,6 @@ updated: 2026-07-18
 
 | วันที่ | เหตุการณ์ |
 |---|---|
-| 2026-07-18 | Bootstrap repo + starter files + utility workflow + plan file |
+| 2026-07-18 | Bootstrap repo + starter files + utility workflow |
+| 2026-07-18 | พบบั๊ก utility workflow ไม่ใส่ base_tree ทำให้ commit `a64004e` ทำ starter หลุดจาก HEAD → แก้ workflow + commit กู้ไฟล์คืนครบ |
+| 2026-07-18 | เพิ่ม plans/setup-checklist.md (ไฟล์นี้) |
