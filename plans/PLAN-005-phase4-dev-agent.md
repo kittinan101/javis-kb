@@ -133,7 +133,13 @@ claude -p "$(cat /tmp/job-prompt.md)" \
 - [ ] SEV1 runbook ลง `guides/GUIDE-xxx-incident-runbook.md`: kill-switch → revert PR/deploy → ตรวจ AuditLog ด้วย job_id → postmortem เป็น ADR → เปิดใหม่
 - **AC:** กด kill-switch → งานใหม่ไม่ถูกรับภายใน 1 นาที งานที่รันอยู่จบปกติ; จำลอง cost เกิน budget → agent หยุดรับงานเอง
 
-#### T3.4 Data retention (PDPA)
+#### T3.4 UAT sign-off ผ่านแชท (PO + QA)
+- [ ] เมื่อ deploy UAT สำเร็จ → n8n ส่งข้อความหา role PM_PO + QA พร้อมลิงก์ UAT env + test cases จาก plan + ปุ่ม Sign-off / Found issues
+- [ ] เช็คสิทธิ์: เฉพาะ PM_PO และ QA — ครบทั้ง 2 role = sign-off ผ่าน → เปิดทาง PR `uat → main` (GitHub required reviewers ยังบังคับอีกชั้น)
+- [ ] บันทึกผู้ sign-off + เวลา + ผลทดสอบ ลงท้าย plan doc + `AuditLog`
+- **AC:** PO กดคนเดียว → ยังเปิด PR ขึ้น main ไม่ได้; ครบ 2 role → ไฟล์ plan มีบันทึก sign-off; Developer ลองกด → ถูกปฏิเสธ
+
+#### T3.5 Data retention (PDPA)
 - [ ] n8n cron purge: ConversationSession หมด TTL / FeedbackLog + chat log เก็บ 90 วัน / AuditLog + CostLog เก็บ 1 ปี
 - [ ] คำสั่ง Admin "ลบข้อมูลของ user X" → purge ทุกตารางด้วย javisUserId + บันทึกการลบลง AuditLog (right to erasure)
 - **AC:** รัน purge แล้ว row เกินอายุหายครบ, การลบ user ทิ้ง audit trail ไว้
@@ -147,6 +153,7 @@ claude -p "$(cat /tmp/job-prompt.md)" \
 - **AC:** 5 งานจบครบ loop โดยไม่มี guardrail violation
 
 #### T4.2 เปิดงานขนาดกลาง
+- [ ] **ซ้อม rollback ก่อน release แรกขึ้น prod จริง:** ติด tag ทุก release → ทดลอง revert PR + redeploy ผ่าน Actions บน UAT env จับเวลา (เป้า: กลับสู่ version เดิมภายในไม่กี่นาที) → บันทึกขั้นตอนลง incident runbook
 - [ ] เมื่อ pilot ผ่าน: เปิด feature เต็ม (มี migration additive ได้) — ยังคง human gate ทุกจุด
 - [ ] ทบทวน retry limit / budget ต่อ job จากข้อมูล pilot จริง → อัพเดต `SystemConfig`
 - **AC (= DoD Phase 4):** PR จาก agent ผ่าน review โดยแก้น้อย > 70%; ไม่มี incident จากโค้ด agent ใน prod; cost อยู่ใน budget

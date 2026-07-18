@@ -184,7 +184,9 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 - [ ] Cost tracking: token usage ทุกคำถาม → `CostLog` → cron รายเดือนเทียบ budget → เกิน 80% แจ้งเตือน
 - [ ] Backup repo นี้: cron รายวัน `git clone --mirror` + `git push --mirror` ไป remote สำรอง (mirror อีกชั้นนอกเหนือจาก GitHub)
 - [ ] เขียน restore runbook ของ n8n ลง `guides/` (GUIDE-xxx: กู้จาก workflow export + encryption key)
-- **AC:** ปิด n8n ชั่วคราว → ได้ alert ภายใน 10 นาที; รายงาน cost ต่อคำถามดูได้; runbook ผ่านการซ้อมกู้จริง 1 ครั้ง
+- [ ] รายงาน metrics รวมรายเดือนอัตโนมัติ (accuracy, adoption, 👍 rate, cost) → สรุปเข้าแชท + บันทึกลง repo (ตามตาราง Success Metrics ใน PLAN-001)
+- [ ] เขียน `guides/GUIDE-xxx-getting-started.md` — วิธีถาม Javis + ตัวอย่างคำสั่งที่ใช้บ่อย + ประกาศเปิดใช้ในแชททีม (adoption plan)
+- **AC:** ปิด n8n ชั่วคราว → ได้ alert ภายใน 10 นาที; รายงาน cost ต่อคำถามดูได้; runbook ผ่านการซ้อมกู้จริง 1 ครั้ง; รายงานเดือนแรกเข้าแชทสำเร็จ
 
 **DoD สัปดาห์ 4 (= จบ Phase 1):** eval accuracy > 80%; ต้นทุน/คำถามวัดได้; alert ทำงาน → พร้อมเริ่ม PLAN-003
 
