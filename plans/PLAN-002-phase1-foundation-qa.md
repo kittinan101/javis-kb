@@ -97,15 +97,15 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 
 ### สัปดาห์ 2 — Single-channel Q&A (LINE ก่อน)
 
-#### T2.1 LINE bot + webhook 🔄 (2026-07-18: workflow "Javis - LINE Gateway (Holm Agents)" สร้างแล้วใน n8n — webhook path `/webhook/javis-line`, HMAC verify + 403/200 + Normalizer + dedup placeholder ครบ, smoke test ผ่าน — รอ: env `LINE_CHANNEL_SECRET_HOLM_AGENTS` + OA สลับ bot mode แล้วค่อย publish + ทดสอบ AC จริง)
-- [ ] สร้าง LINE OA + Messaging API channel → เก็บ channel secret / access token ใน **n8n Credentials เท่านั้น**
-- [ ] n8n Webhook node ตั้ง **Respond: Using "Respond to Webhook" node + เปิด Raw Body** — (Respond Immediately ใช้ไม่ได้: จะตอบ 200 ก่อนตรวจ signature และ body ที่ parse แล้วคำนวณ HMAC ไม่ได้)
-- [ ] Code node ตรวจ `x-line-signature` = HMAC-SHA256(channel secret, raw body) — ไม่ตรง → ตอบ 403 จบ flow / ตรง → ตอบ 200 แล้วทำงานต่อ async
-- [ ] ระหว่าง dev ใช้ tunnel (cloudflared/ngrok) ชี้เข้า n8n **test webhook URL** — ห้าม dev บน production URL
-- **AC:** ยิง request ปลอม (signature ผิด) → 403, request จริงจาก LINE → 200 และเข้า flow
+#### T2.1 LINE bot + webhook ✅ (2026-07-18 — workflow "Javis - LINE Gateway (Holm Agents)" published, ผ่านทุก AC ด้วย traffic จริง)
+- [x] สร้าง LINE OA "Holm Agents" (@422vjcem) + Messaging API channel → token ใน n8n Credentials (`Auth LINE Holm Agents`), channel secret ใน env `LINE_CHANNEL_SECRET_HOLM_AGENTS` — OA เป็น bot mode, auto-reply/greeting ปิดแล้ว
+- [x] n8n Webhook node: Respond to Webhook node + Raw Body — path `/webhook/javis-line`
+- [x] Code node ตรวจ `x-line-signature` (pattern `getBinaryDataBuffer` จาก taskbot) — ผิด → 403 / ถูก → 200 แล้วทำต่อ async
+- [x] Dev ผ่าน manual execution ใน n8n + production ผ่าน Cloudflare Tunnel ที่มีอยู่ (ไม่ต้องตั้ง tunnel ใหม่)
+- **AC:** ✅ signature ปลอม → 403 (exec 465) / ✅ request จริงจาก LINE → 200 + เข้า flow (exec 469, 470) / ✅ bonus: bootstrap reply ผ่าน reply token ทำงานจริง (user ทัก → ได้คำตอบ)
 
 #### T2.2 Normalizer → schema กลาง
-- [ ] Code node แปลง event เป็น Normalized Message Schema (Spec §2) — สร้าง `job_id` รูปแบบ `jv_<ts>_<rand>`:
+- [x] Code node แปลง event เป็น Normalized Message Schema (Spec §2) — สร้าง `job_id` รูปแบบ `jv_<ts>_<rand>` — ✅ พิสูจน์ด้วยข้อความจริง (exec 470: ครบทุก field รวม reply_token + event_id):
 ```json
 { "job_id": "jv_...", "channel": "line", "channel_user_id": "U...", "type": "message",
   "text": "...", "reply_ref": { "line_reply_token": "..." }, "ts": "..." }
