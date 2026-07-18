@@ -60,6 +60,45 @@ classification: internal
 | ประวัติการใช้งาน | audit log, activity log |
 | การเชื่อมต่อ (ระบบภายนอก) | integration |
 
+## Javis AI & Development Process
+
+| ไทย | อังกฤษ |
+|---|---|
+| คลังความรู้ | knowledge base, KB |
+| วิเคราะห์ผลกระทบ | impact analysis |
+| แผนงาน | plan |
+| ความต้องการ / ข้อกำหนด | requirement |
+| สเปก / ข้อกำหนดทางเทคนิค | specification, spec |
+| สถาปัตยกรรม (ระบบ) | architecture |
+| ออกแบบระบบ | system design |
+| ขึ้นระบบ / ปรับใช้ | deploy, deployment |
+| สภาพแวดล้อม (dev/uat/prod) | environment |
+| ทดสอบโดยผู้ใช้ / ทดสอบก่อนขึ้นจริง | UAT (user acceptance testing) |
+| เกณฑ์การยอมรับ | acceptance criteria, AC |
+| ย้อนกลับเวอร์ชัน | rollback |
+| การย้าย/ปรับโครงสร้างฐานข้อมูล | (database) migration |
+| คิวงาน | job queue |
+| แหล่งอ้างอิงคำตอบ | citation, source |
+| การประเมินคุณภาพคำตอบ | evaluation, eval |
+| ความแม่นยำ (คำตอบ) | accuracy |
+| คำตอบมั่ว / ข้อมูลที่ AI แต่งเอง | hallucination |
+| ตัวแทนอัตโนมัติ / เอเจนต์ | agent |
+| เวิร์กโฟลว์ / ขั้นตอนอัตโนมัติ | workflow |
+| ช่องทางแชท | chat channel |
+| ขอบเขตงาน | scope |
+| ความเสี่ยง | risk |
+| ผู้อนุมัติ | approver |
+| ลงชื่ออนุมัติ (ผลทดสอบ) | sign-off |
+| งบประมาณ | budget |
+| ค่าใช้จ่าย / ต้นทุน | cost |
+| ความลับระบบ (รหัส/กุญแจ) | secret, credential, API key |
+| ข้อมูลส่วนบุคคล | PII, personal data |
+| เหตุขัดข้อง | incident |
+| เอกสารความต้องการทางธุรกิจ | BRD (business requirements document) |
+| พจนานุกรมข้อมูล | data dictionary |
+| แบบดีไซน์ / หน้าจอออกแบบ | design, mockup (Figma) |
+| กติกาป้องกัน (ของ AI) | guardrail |
+
 ## Business
 
 | ไทย | อังกฤษ |
