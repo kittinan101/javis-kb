@@ -129,7 +129,7 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 - [ ] Model routing: Haiku = classify intent, Sonnet = ตอบ Q&A
 - **AC (ทดสอบจริง 5 เคส):** (1) คำถามไทยที่มีคำตอบใน KB → ตอบถูก + cite ไฟล์ถูก (2) คำถามอังกฤษ → ตอบได้ (3) คำถามนอก KB → "ไม่พบข้อมูลนี้ใน KB ครับ" ไม่เดา (4) คำถามกำกวม → ถามกลับ (5) เอกสารที่มีข้อความ injection → ไม่ทำตาม + แจ้งเตือน
 
-#### T2.5 ตอบกลับ LINE (Reply-token-first — redesign จาก review) 🔄 (2026-07-19: reply token ใช้จริงทุก path แล้ว; push ใช้เฉพาะ notify Admin/ผู้ขอลงทะเบียน — ยังไม่มี loading animation, push fallback เมื่อ token หมดอายุ, formatter, failure path)
+#### T2.5 ตอบกลับ LINE (Reply-token-first — redesign จาก review) 🔄 (2026-07-19: reply token ใช้จริงทุก path + loading animation ระหว่างรอ Q&A แล้ว (v6); push ใช้เฉพาะ notify Admin/ผู้ขอลงทะเบียน — ยังไม่มี push fallback เมื่อ token หมดอายุ, formatter, failure path)
 - [x] **Reply-token-first ประหยัด push quota ~90%:** รับ webhook → แสดง LINE loading animation → คำตอบเสร็จใน ~50 วิ ส่งผ่าน **reply token (ฟรี ไม่กิน quota)** → เกินเวลา/token หมดอายุค่อย fallback Push API (นับ quota — free tier ~300–500/เดือน ซึ่งทีมใช้จริงจะหมดใน ~1 สัปดาห์ถ้า push ทุกคำตอบ)
 - [ ] **Reply Formatter (component กลาง ใช้ทุก intent):** LINE ไม่ render Markdown → strip/แปลง หรือใช้ Flex Message; Telegram ใช้ parse_mode HTML; จำกัดความยาว (LINE 5,000 / Telegram 4,096 ตัวอักษร) เกิน = แบ่งข้อความหรือสรุป + ลิงก์ไฟล์เต็ม
 - [ ] **Failure path ถึงผู้ใช้ (ห้าม fail เงียบ):** ทุก intent มี timeout (Q&A 60 วิ) — เกิน/error → user ได้ข้อความขอโทษ + job_id เสมอ (alert เข้า #javis-alerts อย่างเดียวไม่พอ — คนถามไม่เห็น)
