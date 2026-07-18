@@ -54,16 +54,17 @@ classification: internal
 
 #### T1.2 Upload ข้อความ ("Javis เก็บ meeting note นี้หน่อย")
 - [ ] Haiku classifier จับ intent `upload` → ถามยืนยันประเภทเอกสาร (meeting-note / guide / feature) ถ้าไม่ชัด
-- [ ] Claude แปลงข้อความเป็น Markdown ตาม template ใน `templates/` + สร้าง frontmatter ครบ (id รันต่อจากเลขล่าสุดในโฟลเดอร์, owners = ผู้ส่ง, updated = วันนี้)
-- [ ] Validate กับ `.frontmatter-schema.json` ใน n8n ก่อน push — ไม่ผ่าน = แก้เองอัตโนมัติ 1 รอบ แล้วยังไม่ผ่าน = ส่งกลับให้ผู้ใช้ดู
-- [ ] Scan เนื้อหาด้วย gitleaks rules (Thai PII + secrets) — เจอ = reject + แจ้งผู้ส่งว่าติดข้อมูลประเภทไหน
-- [ ] Push ผ่าน utility workflow → commit message: `docs(<domain>): <สรุป> (via Javis, by <user>)`
-- [ ] ตอบกลับพร้อมลิงก์ไฟล์ใน GitHub
-- **AC (ทดสอบจริง):** ส่ง meeting note ไทยผ่าน LINE → ไฟล์โผล่ใน `guides/` หรือโฟลเดอร์ที่ถูกต้อง, frontmatter ผ่าน CI, commit message ระบุผู้ส่ง; ส่งข้อความที่มีเบอร์โทรปลอม → โดน reject
+- [ ] Claude แปลงข้อความเป็น Markdown ตาม template ใน `templates/` + frontmatter ครบ (owners = ผู้ส่ง, updated = วันนี้, **`source: chat-upload` เป็น provenance** — flow ความเสี่ยงสูงเลือกกรองได้)
+- [ ] **ID allocation กันชนกัน:** จองเลขจาก sequence ใน javis-core DB (`SELECT ... FOR UPDATE` + increment) — ห้ามอ่านจากโฟลเดอร์ (read-then-allocate race เมื่อ upload พร้อมกัน) + utility workflow ตั้ง concurrency=1 + retry-on-conflict เมื่อ push ชน
+- [ ] Validate frontmatter ด้วย **script เดียวกับ CI** (`validate-frontmatter.mjs` — ห้าม duplicate logic ใน Code node แล้ว drift) — ไม่ผ่าน = แก้อัตโนมัติ 1 รอบ, ยังไม่ผ่าน = แจ้ง user เป็นภาษาคน + บอก action ถัดไป + เก็บ draft escalate หา Admin (**ห้ามทิ้งเนื้อหา user หาย**)
+- [ ] Scan ด้วย gitleaks rules (Thai PII + secrets) + **injection-pattern scan** — เจอ = reject + แจ้งประเภทข้อมูลที่ติด
+- [ ] **Preview ก่อน commit:** สรุป title/ประเภท/โฟลเดอร์ปลายทาง + ปุ่มยืนยัน/แก้ 1 ครั้งก่อน push
+- [ ] Push ผ่าน utility workflow — **จำกัดโฟลเดอร์ปลายทางเฉพาะ `guides/`, `features/`, `domains/`, `figma/`** (ห้ามแตะ `plans/`, `scripts/`, `.github/` — กันปลอม plan/แก้ CI ผ่านแชท) + **ปฏิเสธการ overwrite ไฟล์ที่มีอยู่** → commit: `docs(<domain>): <สรุป> (via Javis, by <user>)` → ตอบลิงก์ไฟล์
+- **AC (ทดสอบจริง):** ส่ง meeting note ไทยผ่าน LINE → เห็น preview → ยืนยัน → ไฟล์เข้าโฟลเดอร์ถูก ผ่าน CI; 2 คน upload ห่างกัน < 10 วิ → id ไม่ซ้ำ ทั้งคู่สำเร็จ; เบอร์โทรปลอม → reject; ลอง upload ทับไฟล์เดิม / ลง `plans/` → ถูกปฏิเสธ
 
-#### T1.3 ทางเลือก PR review (config ได้)
-- [ ] `SystemConfig.upload_requires_pr` (default `false`): `true` = utility workflow push เข้า branch `kb/<job_id>` + เปิด PR แทน push ตรง main
-- **AC:** เปลี่ยนค่าใน DB แล้วพฤติกรรมเปลี่ยนทันทีโดยไม่แก้ workflow
+#### T1.3 PR review flow (default **เปิด**)
+- [ ] `SystemConfig.upload_requires_pr` **default `true`**: push เข้า branch `kb/<job_id>` + เปิด PR — ตรงกับ CONTRIBUTING.md ("ระบบเปิด PR ให้อัตโนมัติ") และเป็น defense หลักต่อ **KB poisoning**: เนื้อหาจากแชทถูกอ่านโดย Q&A/Impact/Plan Generator ทุกตัว ถ้าเข้า main ตรงโดยไม่มีคน review = ช่องฝัง instruction บิดคำตอบทั้งระบบ — ผ่อนเป็น `false` ได้เมื่อ pipeline นิ่ง + ทีม review ไหว
+- **AC:** upload ปกติเกิดเป็น PR ไม่ใช่ push ตรง; เปลี่ยนค่าใน DB แล้วพฤติกรรมเปลี่ยนทันทีโดยไม่แก้ workflow
 
 ### สัปดาห์ 2 — Upload ไฟล์ (PDF / docx)
 
@@ -82,9 +83,11 @@ classification: internal
 
 #### T3.1 Figma integration (REST API + PAT)
 - [ ] สร้าง Figma PAT scope `file_content:read` + `file_metadata:read` → เก็บใน n8n Credentials
-- [ ] n8n workflow `javis-figma-sync`: ดึง `GET /v1/files/:key` (document tree) + `GET /v1/files/:key/nodes?ids=...` → cache ลง `figma/<FEAT-id>-screens.json` ใน repo (ผ่าน utility workflow)
-- [ ] cron sync รายวัน + sync ทันทีเมื่อถูกถามถึง design ที่ cache อายุ > 1 วัน
-- **AC:** ถาม "หน้า login มี field อะไรบ้าง" → Javis ตอบจาก cache Figma พร้อมลิงก์ design
+- [ ] **Mapping "Figma file key ↔ FEAT-id" มีเจ้าของ:** designer ลงทะเบียนผ่านแชท (วางลิงก์ Figma + ระบุ feature) หรือใส่ frontmatter `figma:` ใน FEAT doc → เก็บ mapping ใน javis-core DB (ไม่ใช่ magic ที่ไม่รู้ที่มา)
+- [ ] n8n workflow `javis-figma-sync`: ดึง `GET /v1/files/:key` + `/nodes` → cache ลง `figma/<FEAT-id>-screens.json` — **commit เฉพาะเมื่อ content hash เปลี่ยน** (กัน commit noise)
+- [ ] Sync **on-demand** เมื่อถูกถามและ cache อายุ > 1 วัน (ตัด cron รายวัน — ลด ops load)
+- [ ] Design เปลี่ยน (hash เปลี่ยน) → แจ้ง owners ของ FEAT ที่เกี่ยว (กลไกเดียวกับ drift alert T3.3) — ปิด gap "dev ทำงานกับ design เก่า"
+- **AC:** ถาม "หน้า login มี field อะไรบ้าง" → ตอบจาก cache พร้อมลิงก์ design; designer ลงทะเบียนไฟล์ใหม่ผ่านแชทได้เอง; design เปลี่ยน → owners ได้แจ้งเตือน
 
 #### T3.2 Impact Analysis flow
 - [ ] intent `impact` → ดึงเอกสารทั้ง domain ที่เกี่ยว + decisions ทั้งหมด + figma cache → เรียก Claude (**Opus** — งานวิเคราะห์ยาก) ด้วย prompt Spec §5b วิเคราะห์ 6 หัวข้อ:
@@ -95,7 +98,7 @@ classification: internal
   5. ความเสี่ยง + จุดที่ต้องทดสอบ
   6. ขนาดงาน S/M/L + open questions
 - [ ] ข้อมูลไม่พอ → ตอบ "ต้องการข้อมูลเพิ่ม: ..." ห้ามเดา
-- [ ] ผลลัพธ์ format เป็นรายงานอ่านง่ายในแชท + option "เก็บเข้า KB ไหม?"
+- [ ] ผลลัพธ์ผ่าน Reply Formatter (PLAN-002 T2.5): **สรุปย่อในแชท + รายงานเต็มเป็นลิงก์/ไฟล์** (รายงาน 6 หัวข้อยาวเกิน limit ข้อความแชทแน่นอน) + option "เก็บเข้า KB ไหม?"
 - **AC:** ทดสอบ 3 โจทย์จริง (เช่น "เพิ่ม file upload") → SA review ว่ารายงานถูกต้อง ≥ 2 ใน 3, ทุก claim มี citation, ไม่มีการเดา component ที่ไม่มีอยู่จริง
 
 #### T3.3 Docs-drift alert
