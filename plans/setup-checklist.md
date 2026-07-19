@@ -67,7 +67,7 @@ classification: internal
 
 ## แผนงานเต็มทุก Phase — ดู PLAN-001 ถึง PLAN-008 + FEAT-007
 
-> 2026-07-19 (คำถาม user ระหว่างเบรค implement): จดทะเบียน **FEAT-007 — IDE Integration (Javis MCP) + Code-grounded Answers** () — หลักการสำคัญ: Javis เป็น interface, ความรู้ 2 ชั้น = KB docs + **source code จริงจาก repo เดิมของ project (web/API)**; คำตอบเรื่อง code ต้องอ่าน code จริงประกอบ ไม่ใช่ md อย่างเดียว; MCP read-only เท่านั้น; needs ลง register 5.6–5.7 + G1 ใน PLAN-008 ปรับให้ออกแบบ multi-repo ตั้งแต่แรก
+> 2026-07-19 (คำถาม user ระหว่างเบรค implement): จดทะเบียน **FEAT-007 — IDE Integration (Javis MCP) + Code-grounded Answers** ([features/FEAT-007-ide-integration-code-grounding.md](../features/FEAT-007-ide-integration-code-grounding.md)) — หลักการสำคัญ: Javis เป็น interface, ความรู้ 2 ชั้น = KB docs + **source code จริงจาก repo เดิมของ project (web/API)**; คำตอบเรื่อง code ต้องอ่าน code จริงประกอบ ไม่ใช่ md อย่างเดียว; MCP read-only เท่านั้น; needs ลง register 5.6–5.7 + G1 ใน PLAN-008 ปรับให้ออกแบบ multi-repo ตั้งแต่แรก
 
 > 2026-07-19: เพิ่ม 2 แผนตามบริบท POC (user สั่งแยกแผนนำเสนอ/ใช้จริง):
 > - [PLAN-007 — แผนนำเสนอ POC](PLAN-007-demo-presentation.md) (demo script, ตัวเลขขาย, เตรียมวันนำเสนอ, นิยามผ่าน)
