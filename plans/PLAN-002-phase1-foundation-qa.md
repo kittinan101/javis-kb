@@ -140,7 +140,7 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 
 ### สัปดาห์ 3 — Multi-channel + Feedback
 
-#### T3.1 Telegram bot 🔄 (2026-07-19: build ครบใน gateway v7 — @jarvis_holm_bot + staging; webhook set แล้ว ("Webhook was set") — รอ E2E ทักจริง)
+#### T3.1 Telegram bot ✅ (2026-07-19: **E2E เต็มวงผ่าน** — register → Admin อนุมัติผ่านปุ่มใน LINE → Q&A 3 คำถามตอบสำเร็จพร้อม citations + multi-turn (session 6 turns) + audit ครบ; cost ยืนยัน cache ทำงาน: คำถามแรก $0.32 → คำถามถัดไป $0.04; bugfix ระหว่างทาง: URLSearchParams ไม่มีใน sandbox (v8), LINE Loading ต้อง gate เฉพาะ LINE (v9))
 - [x] สร้าง bot ผ่าน BotFather → token เก็บเป็น env var บน n8n (`TELEGRAM_BOT_TOKEN_JAVIS` + `_STAGING`) — ยืนยันด้วย getMe ทั้งคู่
 - [x] เรียก `setWebhook` พร้อม `secret_token` (= SHA-256 ของ bot token — ไม่ต้องเพิ่ม env ใหม่) → Code node ตรวจ header `X-Telegram-Bot-Api-Secret-Token` ทุก request
 - [x] ต่อเข้า pipeline เดียวกับ LINE — TG Normalizer แปลง update → shape เดียวกัน (`channel: telegram`, `reply_ref.telegram_chat_id`, event_id `tg_<update_id>`) แล้วเข้า Dedup ร่วมกัน (refactor: Dedup ส่ง msg ผ่าน jsonb passthrough — เลิกพึ่ง itemMatching ข้าม branch)
