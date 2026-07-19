@@ -28,7 +28,7 @@ classification: internal
 |---|---|---|---|---|---|---|
 | 1.1 | Telegram bot token (BotFather: `/newbot`) + ชื่อ bot | คุณ | 10 นาที | P1 T3.1 | ✅ | 2026-07-19: @jarvis_holm_bot — token เป็น env var, webhook set + secret แล้ว, gateway v7 รองรับ |
 | 1.2 | บัญชี LINE ที่ 2 (เพื่อนร่วมทีม 1 คน) add @422vjcem แล้วทัก | คุณ/ทีม | 5 นาที | ทดสอบ register/approve E2E | ⬜ | คุณจะได้ปุ่มอนุมัติในแชททันที |
-| 1.3 | **Roster:** รายชื่อทีม + email + role ที่จะให้ (ADMIN/LEAD_SA/PM_PO/QA/DEVELOPER/CONTRIBUTOR/VIEWER) | คุณ | 30 นาที | P1 T1.5 → RBAC ทุก phase | ⬜ | สำคัญที่สุดตัวเดียว — P2 upload, P3 approval, P4 sign-off ล้วนอิง role จากตารางนี้ |
+| 1.3 | **Roster:** รายชื่อทีม + email + role ที่จะให้ (ADMIN/LEAD_SA/PM_PO/QA/DEVELOPER/CONTRIBUTOR/VIEWER) | คุณ | 30 นาที | P1 T1.5 → RBAC ทุก phase | 🔶 | 2026-07-19: **รอสรุปกับทีมก่อน — ตกลงเลื่อนได้** ไม่บล็อก build (กลไก role ทำรอไว้); เส้นตาย: ต้องมีก่อนชวนทีมใช้จริง + ก่อนเริ่ม P2 (upload ต้องรู้ว่าใครเป็น CONTRIBUTOR) |
 | 1.4 | Capacity + Budget รายเดือน (Claude API + infra) | คุณ | 30 นาที | P1 T1.5, gate ทุก phase | ⬜ | ใช้ตั้ง alert 80% + `max_budget_per_job_usd` ใน P4 |
 | 1.5 | ทีม review `templates/chat/message-catalog.md` | ทีม | 30 นาที | P1 T1.6 | ⬜ | ไม่ block build แต่ block "ประกาศใช้" |
 | 1.6 | Rotate รหัส Postgres admin (`admin1234`) บน NAS | คุณ | 5 นาที | security debt | ⬜ | รหัสเดิมเคยผ่านแชท — javis_app ไม่ได้ใช้รหัสนี้แล้ว rotate ได้เลยไม่กระทบระบบ |
