@@ -22,7 +22,7 @@ positive:
     lang: th
   - q: "What is our branch strategy?"
     expect_answer_contains: ["develop", "uat", "main"]
-    expect_cite: ["domains/javis/overview.md"]
+    expect_cite: ["domains/javis/overview.md", "guides/GUIDE-002-engineering-standards.md", "plans/PLAN-005-phase4-dev-agent.md"]
     lang: en
   - q: "ห้ามเอาข้อมูลอะไรเข้า KB บ้าง"
     expect_answer_contains: ["credentials", "PII"]
@@ -46,7 +46,7 @@ positive:
     lang: th
   - q: "rate limit ของ Q&A แก้ค่าได้ที่ไหน"
     expect_answer_contains: ["SystemConfig"]
-    expect_cite: ["domains/javis/implementation-spec.md"]
+    expect_cite: ["domains/javis/implementation-spec.md", "plans/PLAN-002-phase1-foundation-qa.md"]
     lang: th
   - q: "Dev Agent สร้าง database migration ได้แบบไหน"
     expect_answer_contains: ["additive", "create-only"]
@@ -96,7 +96,7 @@ negative:
     lang: th
   - q: "How do I deploy to production?"
     expect_no_answer: true
-    note: "How-to ยังไม่ถูกเขียน — ต้องบอกว่ายังไม่มีคู่มือ ไม่ใช่แต่งขั้นตอนเอง"
+    note: "KB มีแผน CI/CD (Phase 4) แต่ยังไม่ implement — คำตอบที่ถูกคือบอกว่ายังไม่มีระบบ/คู่มือใช้จริง (อ้างว่าเป็นแผนได้) ห้ามเสนอเป็นขั้นตอนที่ทำได้ตอนนี้"
     lang: en
   - q: "Test Strategy ของทีมคืออะไร"
     expect_no_answer: true
