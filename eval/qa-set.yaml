@@ -26,7 +26,7 @@ positive:
     lang: en
   - q: "ห้ามเอาข้อมูลอะไรเข้า KB บ้าง"
     expect_answer_contains: ["credentials", "PII"]
-    expect_cite: ["CONTRIBUTING.md"]
+    expect_cite: ["CONTRIBUTING.md", "README.md", "domains/javis/implementation-spec.md"]
     lang: th
   - q: "frontmatter ของเอกสารใน KB ต้องมี field อะไรบ้าง"
     expect_answer_contains: ["id", "domain", "classification"]
@@ -131,6 +131,6 @@ multi_turn:
   - turns:
       - "taskbot ลงทะเบียนผู้ใช้ยังไง"
       - "ถ้ารหัสถูกใช้ไปแล้วจะเกิดอะไรขึ้น"
-    expect_answer_contains: ["ไม่ถูกต้อง"]
+    expect_answer_contains: ["รหัสที่ถูกใช้ไปแล้วลงทะเบียนซ้ำไม่ได้ (ไม่ผ่านการตรวจสอบ)"]
     expect_cite: ["domains/taskbot/system-design-phase1.md"]
     lang: th
