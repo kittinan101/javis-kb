@@ -140,15 +140,15 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 
 ### สัปดาห์ 3 — Multi-channel + Feedback
 
-#### T3.1 Telegram bot
-- [ ] สร้าง bot ผ่าน BotFather → token เก็บใน n8n Credentials
-- [ ] เรียก `setWebhook` พร้อม `secret_token` → Code node ตรวจ header `X-Telegram-Bot-Api-Secret-Token` ทุก request (ไม่ตั้ง = ใครก็ยิง webhook ปลอมได้)
-- [ ] ต่อเข้า Normalizer เดียวกับ LINE (เพิ่ม branch `channel: telegram`, `reply_ref.telegram_chat_id`)
-- [ ] ปุ่ม/inline keyboard ใช้ **HTTP Request node ยิง Bot API ตรง** (native node มีบั๊ก n8n issue #19955)
+#### T3.1 Telegram bot 🔄 (2026-07-19: build ครบใน gateway v7 — @jarvis_holm_bot + staging; webhook set แล้ว ("Webhook was set") — รอ E2E ทักจริง)
+- [x] สร้าง bot ผ่าน BotFather → token เก็บเป็น env var บน n8n (`TELEGRAM_BOT_TOKEN_JAVIS` + `_STAGING`) — ยืนยันด้วย getMe ทั้งคู่
+- [x] เรียก `setWebhook` พร้อม `secret_token` (= SHA-256 ของ bot token — ไม่ต้องเพิ่ม env ใหม่) → Code node ตรวจ header `X-Telegram-Bot-Api-Secret-Token` ทุก request
+- [x] ต่อเข้า pipeline เดียวกับ LINE — TG Normalizer แปลง update → shape เดียวกัน (`channel: telegram`, `reply_ref.telegram_chat_id`, event_id `tg_<update_id>`) แล้วเข้า Dedup ร่วมกัน (refactor: Dedup ส่ง msg ผ่าน jsonb passthrough — เลิกพึ่ง itemMatching ข้าม branch)
+- [x] ปุ่ม/inline keyboard ใช้ **HTTP Request node ยิง Bot API ตรง** (native node มีบั๊ก n8n issue #19955) — feedback 👍👎 เป็น inline_keyboard + `answerCallbackQuery`
 - **AC:** ถามผ่าน Telegram ได้คำตอบจาก pipeline เดียวกับ LINE, request ไม่มี secret token → reject
 
-#### T3.2 Reply Dispatcher + Async Ack ครบ 2 channel
-- [ ] Switch node ตาม `channel`: LINE → Push API / Telegram → `sendChatAction: typing` แล้ว `sendMessage`
+#### T3.2 Reply Dispatcher + Async Ack ครบ 2 channel 🔄 (2026-07-19: Send Router route ตาม channel แล้ว — telegram → TG Send (sendMessage/answerCallbackQuery) / line reply → LINE Reply / line push → LINE Push; ack: LINE มี loading animation, Telegram typing ยังไม่ทำ)
+- [x] Switch node ตาม `channel`: LINE → reply token/Push API / Telegram → `sendMessage` (typing action = nice-to-have ค้างไว้)
 - **AC:** ทั้ง 2 channel ได้ ack ทันที + คำตอบจริงตามมา ไม่มี webhook timeout
 
 #### T3.3 Multi-turn (ConversationSession) 🔄 (2026-07-19: build เข้า gateway v5 แล้ว — docs อยู่ turn แรกเสมอเพื่อรักษา cache prefix, history ต่อท้าย; SQL upsert เก็บ 10 turn พิสูจน์กับ DB จริง)
