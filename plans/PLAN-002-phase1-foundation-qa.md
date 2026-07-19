@@ -114,7 +114,7 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 - [x] **Dedup duplicate webhook delivery:** เก็บ LINE `webhookEventId` / Telegram `update_id` ในตาราง unique (TTL 24 ชม.) — ซ้ำ = drop (2026-07-19: LINE ฝั่งเดียว — ยืนยัน E2E แล้ว 3 ข้อความจริง = 3 rows ใน `webhook_events`; Telegram รอ T3.1) (LINE ส่ง redelivery ได้, Telegram retry จนกว่าจะได้ 200 — ไม่ dedup = ตอบซ้ำ + จ่าย Claude ซ้ำ)
 - **AC:** ทุกข้อความ LINE ออกจาก Normalizer ครบทุก field, job_id ไม่ซ้ำ; ยิง event เดิมซ้ำ 2 ครั้ง → ระบบตอบครั้งเดียว
 
-#### T2.3 Identity / RBAC lookup 🔄 (2026-07-19: build เสร็จใน gateway v4 — เหลือ E2E register/approve กับบัญชี LINE ที่ 2)
+#### T2.3 Identity / RBAC lookup ✅ (2026-07-19: E2E ผ่านกับบัญชี Telegram จริง; v11 เพิ่ม **role assignment ตอนอนุมัติ** — ปุ่ม [อนุมัติ VIEWER] [อนุมัติ CONTRIBUTOR] [ปฏิเสธ] → สร้าง User (email placeholder `<channel>-<uid>@chat.javis.local` — แทนที่ด้วย email จริงเมื่อ Roster มา) + ผูก identity ในคำสั่งเดียว; identity Telegram ของ Admin ผูกกับ User ADMIN เดิมแล้ว)
 - [x] Postgres node lookup `ChatIdentity` ด้วย (channel, channelUserId) → เติม `javis_user_id`, `role` เข้า message
 - [x] **ไม่พบ = ยังไม่ลงทะเบียน → ห้ามเข้า Q&A** (KB เป็น classification: internal — VIEWER คือ role ต่ำสุดของ "คนที่ลงทะเบียนแล้ว" เท่านั้น) ใช้ได้แค่ `help` / `register`
 - [x] **Register flow ครบวงจร:** user แปลกหน้าทัก → สร้าง pending identity → notify Admin อัตโนมัติพร้อมปุ่มอนุมัติ role ใน 1 กด (confirm template: อนุมัติ/ปฏิเสธ postback) → ตอบ user "ส่งคำขอแล้ว รออนุมัติ" — SQL พิสูจน์กับ DB จริงแล้ว, รอ E2E บัญชีที่ 2
