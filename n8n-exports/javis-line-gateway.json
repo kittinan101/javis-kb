@@ -1,0 +1,1643 @@
+{
+  "id": "eSdweQkHfSqrJEcb",
+  "name": "Javis - LINE Gateway (Holm Agents)",
+  "exportedAt": "2026-07-19",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Verify Signature",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify Signature": {
+      "main": [
+        [
+          {
+            "node": "Valid Signature?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid Signature?": {
+      "main": [
+        [
+          {
+            "node": "Respond 200",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond 403",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond 200": {
+      "main": [
+        [
+          {
+            "node": "Normalizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizer": {
+      "main": [
+        [
+          {
+            "node": "Dedup (webhook_events)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dedup (webhook_events)": {
+      "main": [
+        [
+          {
+            "node": "Filter New Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter New Events": {
+      "main": [
+        [
+          {
+            "node": "Identity Lookup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identity Lookup": {
+      "main": [
+        [
+          {
+            "node": "Join Identity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Join Identity": {
+      "main": [
+        [
+          {
+            "node": "Route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route": {
+      "main": [
+        [
+          {
+            "node": "Parse Approval",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Msg Welcome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Intent Classify",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Parse Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Msg Pending",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Register Insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Approval": {
+      "main": [
+        [
+          {
+            "node": "Approval Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Update": {
+      "main": [
+        [
+          {
+            "node": "Msg Approve",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Register Insert": {
+      "main": [
+        [
+          {
+            "node": "Msg Register",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QA Get Tree": {
+      "main": [
+        [
+          {
+            "node": "QA Pick Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QA Pick Files": {
+      "main": [
+        [
+          {
+            "node": "QA Fetch Blob",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QA Fetch Blob": {
+      "main": [
+        [
+          {
+            "node": "QA Build Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QA Build Request": {
+      "main": [
+        [
+          {
+            "node": "QA Call Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QA Call Claude": {
+      "main": [
+        [
+          {
+            "node": "QA Msg",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "QA Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Msg Welcome": {
+      "main": [
+        [
+          {
+            "node": "Send Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Msg Pending": {
+      "main": [
+        [
+          {
+            "node": "Send Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Msg Register": {
+      "main": [
+        [
+          {
+            "node": "Send Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Msg Approve": {
+      "main": [
+        [
+          {
+            "node": "Send Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QA Msg": {
+      "main": [
+        [
+          {
+            "node": "Send Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rate Limit": {
+      "main": [
+        [
+          {
+            "node": "Rate Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rate Gate": {
+      "main": [
+        [
+          {
+            "node": "Is LINE?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Msg RateLimit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Session Read": {
+      "main": [
+        [
+          {
+            "node": "QA Get Tree",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Msg RateLimit": {
+      "main": [
+        [
+          {
+            "node": "Send Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QA Post": {
+      "main": [
+        [
+          {
+            "node": "Session Write",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Session Write": {
+      "main": [
+        [
+          {
+            "node": "Audit Insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Feedback": {
+      "main": [
+        [
+          {
+            "node": "Feedback Upsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Feedback Upsert": {
+      "main": [
+        [
+          {
+            "node": "Msg FB Ack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Msg FB Ack": {
+      "main": [
+        [
+          {
+            "node": "Send Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Router": {
+      "main": [
+        [
+          {
+            "node": "TG Send",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LINE Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LINE Push",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Webhook": {
+      "main": [
+        [
+          {
+            "node": "TG Verify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TG Verify": {
+      "main": [
+        [
+          {
+            "node": "TG Normalizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TG Normalizer": {
+      "main": [
+        [
+          {
+            "node": "Dedup (webhook_events)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is LINE?": {
+      "main": [
+        [
+          {
+            "node": "LINE Loading",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Session Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LINE Loading": {
+      "main": [
+        [
+          {
+            "node": "Session Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intent Classify": {
+      "main": [
+        [
+          {
+            "node": "Intent Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intent Gate": {
+      "main": [
+        [
+          {
+            "node": "Intent Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intent Router": {
+      "main": [
+        [
+          {
+            "node": "Msg Canned",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Msg Canned",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rate Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Msg Canned": {
+      "main": [
+        [
+          {
+            "node": "Send Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "a9e0082f-8b10-4c00-8fd6-229dd10e9cc5",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "javis-line",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "webhookId": "a9799a23-b0fc-4cf2-a4bc-e9c737fa048e"
+    },
+    {
+      "id": "e8af78e9-7f6d-4f60-b662-ab8d5f0190b8",
+      "name": "Verify Signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const crypto = require('crypto');\nconst secret = $env.LINE_CHANNEL_SECRET_HOLM_AGENTS;\nif (!secret) throw new Error('LINE_CHANNEL_SECRET_HOLM_AGENTS not set (n8n env)');\nconst item = $input.first();\nlet raw;\ntry {\n  raw = await this.helpers.getBinaryDataBuffer(0, 'data');\n} catch (e) {\n  raw = Buffer.from(JSON.stringify(item.json.body || {}));\n}\nconst sig = (item.json.headers || {})['x-line-signature'];\nconst expected = crypto.createHmac('sha256', secret).update(raw).digest('base64');\nif (expected !== sig) return [{ json: { valid: false } }];\nconst body = JSON.parse(raw.toString());\nreturn [{ json: { valid: true, events: body.events || [] } }];"
+      }
+    },
+    {
+      "id": "226ee222-1a73-4240-b53a-1203f6ad7a9c",
+      "name": "Valid Signature?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.valid }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "5012bf3d-f393-4bf3-8a30-f285cdacae7c",
+      "name": "Respond 200",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "09cb2b8c-9eea-4056-9667-5f5bbbd36c00",
+      "name": "Normalizer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Normalized Message Schema (PLAN-002 T2.2 / Spec section 2)\nconst events = $('Verify Signature').first().json.events || [];\nconst out = [];\nfor (const e of events) {\n  const ok = (e.type === 'message' && e.message && e.message.type === 'text') || e.type === 'follow' || e.type === 'postback';\n  if (!ok) continue; // sticker/image/voice -> fallback message ตาม catalog (ทำใน T2.5)\n  const rand = Math.random().toString(36).slice(2, 8);\n  out.push({ json: {\n    job_id: 'jv_' + Date.now() + '_' + rand,\n    channel: 'line',\n    channel_user_id: e.source ? e.source.userId : null,\n    type: e.type === 'postback' ? 'button_callback' : (e.type === 'follow' ? 'follow' : 'message'),\n    text: e.message ? e.message.text : '',\n    callback_data: e.postback ? e.postback.data : null,\n    event_id: e.webhookEventId,\n    reply_ref: { line_reply_token: e.replyToken || null },\n    ts: e.timestamp ? new Date(e.timestamp).toISOString() : new Date().toISOString()\n  }});\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "e6b53b2b-fa96-44cc-ad5c-dc6ea012c91a",
+      "name": "Respond 403",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        192
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "invalid signature",
+        "options": {
+          "responseCode": 403
+        }
+      }
+    },
+    {
+      "id": "469eb699-bec4-4b10-8204-f7545fc891e5",
+      "name": "LINE Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1420,
+        96
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/reply",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}"
+      }
+    },
+    {
+      "id": "0e467a31-0212-4ea2-b532-0228dad3c488",
+      "name": "Dedup (webhook_events)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1200,
+        96
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH ins AS (INSERT INTO webhook_events (event_id) VALUES ($1) ON CONFLICT (event_id) DO UPDATE SET processed_at = webhook_events.processed_at RETURNING (xmax = 0) AS inserted) SELECT (SELECT inserted FROM ins) AS inserted, $2::jsonb AS msg",
+        "options": {
+          "queryReplacement": "={{ [$json.event_id, JSON.stringify($json)] }}"
+        }
+      }
+    },
+    {
+      "id": "b2dc5490-4362-4430-a30b-342bb1966c33",
+      "name": "Filter New Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  if (j.inserted !== true || !j.msg) continue;\n  out.push({ json: typeof j.msg === 'string' ? JSON.parse(j.msg) : j.msg });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "2e04cc62-5446-483d-bec1-90070ddcec57",
+      "name": "Identity Lookup",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1600,
+        96
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT ci.id AS identity_id, ci.status, u.role FROM (VALUES ($1, $2)) v(cuid, chan) LEFT JOIN chat_identities ci ON ci.channel = v.chan AND ci.channel_user_id = v.cuid LEFT JOIN users u ON u.id = ci.javis_user_id",
+        "options": {
+          "queryReplacement": "={{ [$json.channel_user_id, $json.channel] }}"
+        }
+      }
+    },
+    {
+      "id": "1d2c52fa-7961-4684-9ed2-3dc0420c8407",
+      "name": "Join Identity",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1800,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const rows = $input.all();\nconst out = [];\nfor (let i = 0; i < rows.length; i++) {\n  const msg = $('Filter New Events').itemMatching(i).json;\n  const id = rows[i].json || {};\n  out.push({ json: { ...msg, identity_id: id.identity_id || null, identity_status: id.status || null, role: id.role || null } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "4b682a06-2628-4a0e-be6e-21af0e8a7f77",
+      "name": "Route",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2000,
+        96
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "admin_action",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.callback_data || '' }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "rightValue": "reg&cid="
+                  },
+                  {
+                    "leftValue": "={{ $json.role }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "ADMIN"
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "follow",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.type }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "follow"
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "qa",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.type }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "message"
+                  },
+                  {
+                    "leftValue": "={{ $json.identity_status }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "approved"
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "approved_callback",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.identity_status }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "approved"
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "pending",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.identity_status }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "pending"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      }
+    },
+    {
+      "id": "fbb98fcd-5983-4e51-9bca-35931e7411b3",
+      "name": "Msg Welcome",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2250,
+        -100
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const token = j.reply_ref && j.reply_ref.line_reply_token;\n  if (!token) continue;\n  const text = j.identity_status === 'approved'\n    ? 'สวัสดีครับ ผม Javis 🤖 ผู้ช่วยคลังความรู้ของทีม พิมพ์คำถามได้เลยครับ'\n    : 'สวัสดีครับ ผม Javis 🤖 ผู้ช่วยคลังความรู้ของทีม\\nพิมพ์ข้อความอะไรก็ได้เพื่อเริ่มลงทะเบียนครับ';\n  out.push({ json: { kind: 'reply', body: JSON.stringify({ replyToken: token, messages: [{ type: 'text', text }] }) } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "e280d25b-fa19-4e9f-aeea-e9d16656a895",
+      "name": "Msg Pending",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2250,
+        500
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const text = 'คำขอของคุณกำลังรอ Admin อนุมัติครับ 🙏 เดี๋ยวผมแจ้งทันทีที่ใช้งานได้';\n  if (j.channel === 'telegram' && j.reply_ref && j.reply_ref.telegram_chat_id) {\n    out.push({ json: { channel: 'telegram', tg_method: 'sendMessage', body: JSON.stringify({ chat_id: j.reply_ref.telegram_chat_id, text }) } });\n  } else if (j.reply_ref && j.reply_ref.line_reply_token) {\n    out.push({ json: { kind: 'reply', body: JSON.stringify({ replyToken: j.reply_ref.line_reply_token, messages: [{ type: 'text', text }] }) } });\n  }\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "5c43353c-af48-4f4f-b173-0b7c61662a2d",
+      "name": "Register Insert",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        2250,
+        700
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH ins AS (INSERT INTO chat_identities (id, channel, channel_user_id, display_name, status, created_at) VALUES ('ci_' || substr(md5(random()::text || clock_timestamp()::text), 1, 20), $3, $1, $2, 'pending', now()) ON CONFLICT (channel, channel_user_id) DO NOTHING RETURNING id) SELECT (SELECT id FROM ins) AS new_identity_id, (SELECT ci.channel_user_id FROM chat_identities ci JOIN users u ON u.id = ci.javis_user_id WHERE u.role = 'ADMIN' AND ci.channel = 'line' LIMIT 1) AS admin_uid",
+        "options": {
+          "queryReplacement": "={{ [$json.channel_user_id, $json.channel_user_id, $json.channel] }}"
+        }
+      }
+    },
+    {
+      "id": "9fb5dffb-8d8a-4648-bb77-5368f00f5036",
+      "name": "Msg Register",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2450,
+        700
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const out = [];\nconst rows = $input.all();\nfor (let i = 0; i < rows.length; i++) {\n  const src = $('Route').itemMatching(i).json;\n  const r = rows[i].json || {};\n  const textUser = r.new_identity_id ? 'ส่งคำขอลงทะเบียนให้ Admin แล้วครับ 🙏 รออนุมัติสักครู่' : 'คำขอของคุณกำลังรอ Admin อนุมัติครับ 🙏';\n  if (src.channel === 'telegram' && src.reply_ref && src.reply_ref.telegram_chat_id) {\n    out.push({ json: { channel: 'telegram', tg_method: 'sendMessage', body: JSON.stringify({ chat_id: src.reply_ref.telegram_chat_id, text: textUser }) } });\n  } else if (src.reply_ref && src.reply_ref.line_reply_token) {\n    out.push({ json: { kind: 'reply', body: JSON.stringify({ replyToken: src.reply_ref.line_reply_token, messages: [{ type: 'text', text: textUser }] }) } });\n  }\n  if (r.new_identity_id && r.admin_uid) {\n    const chanLabel = src.channel === 'telegram' ? 'Telegram' : 'LINE';\n    out.push({ json: { kind: 'push', body: JSON.stringify({ to: r.admin_uid, messages: [{ type: 'template', altText: 'คำขอลงทะเบียนใหม่', template: { type: 'buttons', title: '📥 คำขอลงทะเบียนใหม่', text: chanLabel + ' user: ' + String(src.channel_user_id).slice(0, 12) + '…', actions: [{ type: 'postback', label: 'อนุมัติ VIEWER', data: 'action=approve_reg&cid=' + r.new_identity_id + '&role=VIEWER' }, { type: 'postback', label: 'อนุมัติ CONTRIBUTOR', data: 'action=approve_reg&cid=' + r.new_identity_id + '&role=CONTRIBUTOR' }, { type: 'postback', label: 'ปฏิเสธ', data: 'action=reject_reg&cid=' + r.new_identity_id }] } }] }) } });\n  }\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "8dd8b963-025a-4f57-8624-677f74895b2e",
+      "name": "Parse Approval",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2250,
+        -300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "function parseQS(s) {\n  const p = {};\n  for (const kv of String(s || '').split('&')) {\n    const i = kv.indexOf('=');\n    if (i > 0) p[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1));\n  }\n  return p;\n}\nconst out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const params = parseQS(j.callback_data);\n  const action = params.action;\n  const cid = params.cid;\n  if (!cid || !['approve_reg', 'reject_reg'].includes(action)) continue;\n  let role = params.role || 'VIEWER';\n  if (!['VIEWER', 'CONTRIBUTOR'].includes(role)) role = 'VIEWER';\n  out.push({ json: { cid, new_status: action === 'approve_reg' ? 'approved' : 'rejected', role, admin_reply_token: j.reply_ref && j.reply_ref.line_reply_token } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "0ec3cd2e-0201-4ace-b1c1-094e88381602",
+      "name": "Approval Update",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        2450,
+        -300
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH tgt AS (SELECT id, channel, channel_user_id, display_name FROM chat_identities WHERE id = $1 AND status = 'pending'), usr AS (INSERT INTO users (id, email, name, role, created_at) SELECT 'u_' || substr(md5(random()::text || clock_timestamp()::text), 1, 20), channel || '-' || channel_user_id || '@chat.javis.local', display_name, $3::\"Role\", now() FROM tgt WHERE $2 = 'approved' ON CONFLICT (email) DO UPDATE SET role = excluded.role RETURNING id), upd AS (UPDATE chat_identities ci SET status = $2, javis_user_id = COALESCE((SELECT id FROM usr), ci.javis_user_id) FROM tgt WHERE ci.id = tgt.id RETURNING ci.channel, ci.channel_user_id, ci.status) SELECT (SELECT channel FROM upd) AS target_chan, (SELECT channel_user_id FROM upd) AS target_uid, (SELECT status FROM upd) AS new_status, CASE WHEN $2 = 'approved' THEN $3 END AS granted_role",
+        "options": {
+          "queryReplacement": "={{ [$json.cid, $json.new_status, $json.role] }}"
+        }
+      }
+    },
+    {
+      "id": "a91bb794-ba07-4280-ba61-80177327a75a",
+      "name": "Msg Approve",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2650,
+        -300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const out = [];\nconst rows = $input.all();\nfor (let i = 0; i < rows.length; i++) {\n  const src = $('Parse Approval').itemMatching(i).json;\n  const r = rows[i].json || {};\n  if (src.admin_reply_token) {\n    const text = !r.target_uid ? 'รายการนี้ถูกดำเนินการไปแล้วครับ' : (r.new_status === 'approved' ? '✅ อนุมัติแล้ว — สิทธิ์ ' + (r.granted_role || 'VIEWER') : '🚫 ปฏิเสธแล้ว');\n    out.push({ json: { kind: 'reply', body: JSON.stringify({ replyToken: src.admin_reply_token, messages: [{ type: 'text', text }] }) } });\n  }\n  if (r.target_uid) {\n    const text = r.new_status === 'approved' ? 'ลงทะเบียนสำเร็จ 🎉 สิทธิ์ของคุณ: ' + (r.granted_role || 'VIEWER') + '\\nพิมพ์คำถามได้เลยครับ' : 'ขออภัยครับ คำขอลงทะเบียนไม่ได้รับอนุมัติ สอบถามเพิ่มเติมได้ที่ Admin ครับ';\n    if (r.target_chan === 'telegram') {\n      out.push({ json: { channel: 'telegram', tg_method: 'sendMessage', body: JSON.stringify({ chat_id: r.target_uid, text }) } });\n    } else {\n      out.push({ json: { kind: 'push', body: JSON.stringify({ to: r.target_uid, messages: [{ type: 'text', text }] }) } });\n    }\n  }\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "0ff6903c-ff5d-4fde-976f-4374ba007af3",
+      "name": "QA Get Tree",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2250,
+        96
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/kittinan101/javis-kb/git/trees/main?recursive=1",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "a1dcb6a1-7813-43d9-b1ac-2cf7bf96d16e",
+      "name": "QA Pick Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2450,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const tree = $input.first().json.tree || [];\nconst keep = /^(README\\.md|CONTRIBUTING\\.md|prompts\\/qa-system\\.md|domains\\/.+\\.md|guides\\/.+\\.md|plans\\/.+\\.md|glossary\\/.+\\.md)$/;\nconst files = tree.filter(t => t.type === 'blob' && keep.test(t.path)).sort((a, b) => a.path.localeCompare(b.path));\nif (files.length === 0) throw new Error('no KB files matched');\nreturn files.map(f => ({ json: { path: f.path, url: f.url } }));"
+      }
+    },
+    {
+      "id": "8a25db1e-7231-4757-9677-ebb7b5bc42b2",
+      "name": "QA Fetch Blob",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2650,
+        96
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "7a336a68-7e0e-449d-bed6-3fce2e0e85b2",
+      "name": "QA Build Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2850,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const paths = $('QA Pick Files').all().map(i => i.json.path);\nconst blobs = $input.all();\nif (paths.length !== blobs.length) throw new Error('path/blob count mismatch');\nconst src = $('Join Identity').first().json;\nconst question = src.text;\nif (!question) throw new Error('no question text');\nconst histRow = $('Session Read').first().json || {};\nlet history = [];\ntry { history = typeof histRow.history === 'string' ? JSON.parse(histRow.history) : (histRow.history || []); } catch (e) { history = []; }\n\nlet systemPrompt = 'คุณคือ Javis ผู้ช่วยคลังความรู้ของทีม ตอบจากเอกสารเท่านั้น ใช้ citations เสมอ';\nconst documents = [];\nfor (let i = 0; i < paths.length; i++) {\n  const raw = blobs[i].json.content || '';\n  const text = Buffer.from(raw.replace(/\\n/g, ''), 'base64').toString('utf8');\n  if (paths[i] === 'prompts/qa-system.md') {\n    const m = text.match(/```([\\s\\S]*?)```/);\n    if (m) systemPrompt = m[1].trim();\n    continue;\n  }\n  documents.push({ type: 'document', source: { type: 'text', media_type: 'text/plain', data: text }, title: paths[i], citations: { enabled: true } });\n}\ndocuments[documents.length - 1].cache_control = { type: 'ephemeral' };\n\nconst msgs = [\n  { role: 'user', content: documents },\n  { role: 'assistant', content: 'รับทราบครับ ผมจะตอบจากเอกสารเหล่านี้เท่านั้น' }\n];\nfor (const h of history) {\n  if (h && (h.role === 'user' || h.role === 'assistant') && h.content) {\n    msgs.push({ role: h.role, content: String(h.content).slice(0, 2000) });\n  }\n}\nmsgs.push({ role: 'user', content: 'ใช้ citations ประกอบทุกข้อเท็จจริงเสมอ\\n\\nคำถาม: ' + question });\n\nconst body = {\n  model: 'claude-sonnet-5',\n  max_tokens: 2048,\n  output_config: { effort: 'low' },\n  system: [{ type: 'text', text: systemPrompt }],\n  messages: msgs\n};\nreturn [{ json: { body: JSON.stringify(body), reply_token: src.reply_ref && src.reply_ref.line_reply_token, job_id: src.job_id, question, channel_user_id: src.channel_user_id, channel: src.channel, tg_chat_id: src.reply_ref && src.reply_ref.telegram_chat_id } }];"
+      }
+    },
+    {
+      "id": "17963f4b-6bf0-4d79-bd5c-fb2977228a73",
+      "name": "QA Call Claude",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        3050,
+        96
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {
+          "timeout": 50000
+        }
+      }
+    },
+    {
+      "id": "86db5a86-c5c7-4ef1-af70-55181e9ed9b4",
+      "name": "QA Msg",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3250,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const resp = $input.first().json;\nlet answer = '';\nconst cited = new Set();\nfor (const b of resp.content || []) {\n  if (b.type === 'text') {\n    answer += b.text;\n    for (const c of b.citations || []) cited.add(c.document_title);\n  }\n}\nif (!answer) answer = 'ขออภัยครับ ระบบขัดข้องชั่วคราว ลองใหม่อีกครั้งครับ 🙏';\nif (answer.length > 3900) answer = answer.slice(0, 3900) + '…';\nconst citeText = cited.size ? '\\n\\n📎 อ้างอิง: ' + [...cited].join(', ') : '';\nconst req = $('QA Build Request').first().json;\nif (req.channel === 'telegram' && req.tg_chat_id) {\n  return [{ json: { channel: 'telegram', tg_method: 'sendMessage', body: JSON.stringify({ chat_id: req.tg_chat_id, text: answer + citeText, reply_markup: { inline_keyboard: [[{ text: '👍 ตอบตรง', callback_data: 'action=fb&r=up&job=' + req.job_id }, { text: '👎 ยังไม่ใช่', callback_data: 'action=fb&r=down&job=' + req.job_id }]] } }) } }];\n}\nreturn [{ json: { kind: 'reply', body: JSON.stringify({ replyToken: req.reply_token, messages: [{ type: 'text', text: answer + citeText, quickReply: { items: [{ type: 'action', action: { type: 'postback', label: '👍 ตอบตรง', data: 'action=fb&r=up&job=' + req.job_id } }, { type: 'action', action: { type: 'postback', label: '👎 ยังไม่ใช่', data: 'action=fb&r=down&job=' + req.job_id } }] } }] }) } }];"
+      }
+    },
+    {
+      "id": "12f70d02-85a6-4e8c-980e-f92df6fa4c9a",
+      "name": "Send Router",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        3450,
+        300
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "telegram",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.channel }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "telegram"
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "reply",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.kind }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "reply"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      }
+    },
+    {
+      "id": "247b5295-1595-4e3a-a293-7a96114552f8",
+      "name": "LINE Push",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        3650,
+        400
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}"
+      }
+    },
+    {
+      "id": "a0290f77-6e4d-41ae-ab33-a0c60c7020e0",
+      "name": "Rate Limit",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        2250,
+        60
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH cfg AS (SELECT value::int AS lim FROM system_config WHERE key='rate_limit_qa_per_hour'), up AS (INSERT INTO rate_limit_counters (id, javis_user_id, window_start, count) VALUES ('rl_'||substr(md5(random()::text||clock_timestamp()::text),1,20), $1, date_trunc('hour', now()), 1) ON CONFLICT (javis_user_id, window_start) DO UPDATE SET count = rate_limit_counters.count + 1 RETURNING count) SELECT (SELECT count FROM up) AS cnt, (SELECT lim FROM cfg) AS lim",
+        "options": {
+          "queryReplacement": "={{ [$json.channel_user_id] }}"
+        }
+      }
+    },
+    {
+      "id": "a20a4dc9-6a64-4b06-9d44-c5072b3c58f6",
+      "name": "Rate Gate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2400,
+        60
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.cnt }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              },
+              "rightValue": "={{ $json.lim }}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "7d51611b-3d1f-4c4c-8663-deada3f9ae11",
+      "name": "Msg RateLimit",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2550,
+        220
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const src = $('Join Identity').first().json;\nconst lim = $input.first().json.lim;\nconst text = 'ชั่วโมงนี้คุณถามครบโควต้าแล้วครับ (' + lim + ' คำถาม/ชม.) ถามได้อีกครั้งต้นชั่วโมงหน้า 🙏';\nif (src.channel === 'telegram' && src.reply_ref && src.reply_ref.telegram_chat_id) {\n  return [{ json: { channel: 'telegram', tg_method: 'sendMessage', body: JSON.stringify({ chat_id: src.reply_ref.telegram_chat_id, text }) } }];\n}\nconst token = src.reply_ref && src.reply_ref.line_reply_token;\nif (!token) return [];\nreturn [{ json: { kind: 'reply', body: JSON.stringify({ replyToken: token, messages: [{ type: 'text', text }] }) } }];"
+      }
+    },
+    {
+      "id": "42d44677-6364-4cc9-a7c6-85c6176a187d",
+      "name": "Session Read",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        2550,
+        20
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT cs.messages AS history FROM (VALUES ($1, $2)) v(cuid, chan) LEFT JOIN conversation_sessions cs ON cs.channel = v.chan AND cs.channel_user_id = v.cuid AND cs.expires_at > now()",
+        "options": {
+          "queryReplacement": "={{ [$('Join Identity').first().json.channel_user_id, $('Join Identity').first().json.channel] }}"
+        }
+      }
+    },
+    {
+      "id": "072e8543-f43b-4e84-adb5-3a43239a5f3b",
+      "name": "QA Post",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3250,
+        250
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const resp = $input.first().json;\nlet answer = '';\nconst cited = [];\nfor (const b of resp.content || []) {\n  if (b.type === 'text') {\n    answer += b.text;\n    for (const c of b.citations || []) if (!cited.includes(c.document_title)) cited.push(c.document_title);\n  }\n}\nconst req = $('QA Build Request').first().json;\nconst u = resp.usage || {};\nconst cost = ((u.input_tokens || 0) * 3 + (u.cache_creation_input_tokens || 0) * 3.75 + (u.cache_read_input_tokens || 0) * 0.3 + (u.output_tokens || 0) * 15) / 1e6;\nreturn [{ json: {\n  channel_user_id: req.channel_user_id,\n  channel: req.channel,\n  question: String(req.question).slice(0, 3000),\n  answer: answer.slice(0, 3000),\n  job_id: req.job_id,\n  cost_usd: Math.round(cost * 10000) / 10000,\n  detail: JSON.stringify({ question: String(req.question).slice(0, 1000), answer: answer.slice(0, 1500), citations: cited })\n} }];"
+      }
+    },
+    {
+      "id": "92b69778-3f54-44bd-855c-081491ef5895",
+      "name": "Session Write",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        3450,
+        250
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO conversation_sessions (id, channel, channel_user_id, messages, expires_at) VALUES ('cs_'||substr(md5(random()::text||clock_timestamp()::text),1,20), $4, $1, jsonb_build_array(jsonb_build_object('role','user','content',$2::text), jsonb_build_object('role','assistant','content',$3::text)), now() + make_interval(mins => COALESCE((SELECT value::int FROM system_config WHERE key = 'session_ttl_minutes'), 30))) ON CONFLICT (channel, channel_user_id) DO UPDATE SET messages = (SELECT jsonb_agg(elem ORDER BY ord) FROM (SELECT elem, ord FROM jsonb_array_elements(conversation_sessions.messages || excluded.messages) WITH ORDINALITY t(elem, ord) ORDER BY ord DESC LIMIT 10) s), expires_at = excluded.expires_at RETURNING channel_user_id",
+        "options": {
+          "queryReplacement": "={{ [$json.channel_user_id, $json.question, $json.answer, $json.channel] }}"
+        }
+      }
+    },
+    {
+      "id": "70fdda5a-5ded-4135-92ec-8142d0ee9370",
+      "name": "Audit Insert",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        3650,
+        250
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO audit_logs (id, job_id, ts, stage, level, channel, javis_user_id, event, detail, cost_usd) VALUES ('al_'||substr(md5(random()::text||clock_timestamp()::text),1,20), $1, now(), 'qa-flow', 'info', $5, $2, 'qa_answered', $3::jsonb, $4) RETURNING id",
+        "options": {
+          "queryReplacement": "={{ [$('QA Post').first().json.job_id, $('QA Post').first().json.channel_user_id, $('QA Post').first().json.detail, $('QA Post').first().json.cost_usd, $('QA Post').first().json.channel] }}"
+        }
+      }
+    },
+    {
+      "id": "5e09ff57-fee1-4ffb-a13e-c9715a4f9e72",
+      "name": "Parse Feedback",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2250,
+        380
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "function parseQS(s) {\n  const p = {};\n  for (const kv of String(s || '').split('&')) {\n    const i = kv.indexOf('=');\n    if (i > 0) p[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1));\n  }\n  return p;\n}\nconst out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const params = parseQS(j.callback_data);\n  if (params.action !== 'fb') continue;\n  out.push({ json: { job_id: params.job || '', rating: params.r === 'up' ? 'up' : 'down', uid: j.channel_user_id, channel: j.channel, cb_id: j.reply_ref && j.reply_ref.callback_query_id, reply_token: j.reply_ref && j.reply_ref.line_reply_token } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "3428f9b8-40e3-4c27-a686-85bffb0362a1",
+      "name": "Feedback Upsert",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        2450,
+        380
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO feedback_logs (id, job_id, javis_user_id, question, answer, rating, cited_docs, created_at) SELECT 'fb_'||substr(md5(random()::text||clock_timestamp()::text),1,20), $1, $2, COALESCE(al.detail->>'question',''), COALESCE(al.detail->>'answer',''), $3, COALESCE(al.detail->'citations','[]'::jsonb), now() FROM (VALUES (1)) v LEFT JOIN LATERAL (SELECT detail FROM audit_logs WHERE job_id = $1 AND event = 'qa_answered' ORDER BY ts DESC LIMIT 1) al ON true ON CONFLICT (job_id, javis_user_id) DO UPDATE SET rating = excluded.rating RETURNING rating",
+        "options": {
+          "queryReplacement": "={{ [$json.job_id, $json.uid, $json.rating] }}"
+        }
+      }
+    },
+    {
+      "id": "fd08312f-401a-401e-ac5d-8d4a6da7caa8",
+      "name": "Msg FB Ack",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2650,
+        380
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const out = [];\nconst rows = $input.all();\nfor (let i = 0; i < rows.length; i++) {\n  const src = $('Parse Feedback').itemMatching(i).json;\n  const text = rows[i].json.rating === 'down' ? 'รับทราบครับ ทีมจะปรับปรุง 🙏' : 'ขอบคุณครับ 🙏';\n  if (src.channel === 'telegram' && src.cb_id) {\n    out.push({ json: { channel: 'telegram', tg_method: 'answerCallbackQuery', body: JSON.stringify({ callback_query_id: src.cb_id, text }) } });\n  } else if (src.reply_token) {\n    out.push({ json: { kind: 'reply', body: JSON.stringify({ replyToken: src.reply_token, messages: [{ type: 'text', text }] }) } });\n  }\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "53baa7b0-c6c5-482a-a042-632a92ae92ad",
+      "name": "Telegram Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1000,
+        -350
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "javis-telegram",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "95819223-b441-4a3c-9771-fad5cf105aec"
+    },
+    {
+      "id": "5218366f-78d4-42c4-99db-bc3553279210",
+      "name": "TG Verify",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        -350
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const crypto = require('crypto');\nconst expect = crypto.createHash('sha256').update($env.TELEGRAM_BOT_TOKEN_JAVIS || '').digest('hex');\nconst out = [];\nfor (const item of $input.all()) {\n  const h = (item.json.headers || {})['x-telegram-bot-api-secret-token'];\n  if (h === expect && item.json.body) out.push({ json: item.json.body });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "54ebbe7a-b853-4b16-a7a4-76923dacf3aa",
+      "name": "TG Normalizer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        -350
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const out = [];\nfor (const item of $input.all()) {\n  const u = item.json;\n  if (!u || typeof u.update_id === 'undefined') continue;\n  let type = null, text = '', cud = null, chatId = null, cbId = null, cbData = '';\n  if (u.message && u.message.from && u.message.text) {\n    type = 'message'; text = u.message.text; cud = String(u.message.from.id); chatId = u.message.chat && u.message.chat.id;\n  } else if (u.callback_query && u.callback_query.from) {\n    type = 'button_callback'; cbData = u.callback_query.data || ''; cud = String(u.callback_query.from.id);\n    chatId = u.callback_query.message && u.callback_query.message.chat && u.callback_query.message.chat.id;\n    cbId = u.callback_query.id;\n  } else { continue; }\n  const job_id = 'jv_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);\n  out.push({ json: { job_id, channel: 'telegram', channel_user_id: cud, type, text, callback_data: cbData, event_id: 'tg_' + u.update_id, reply_ref: { telegram_chat_id: chatId, callback_query_id: cbId }, ts: new Date().toISOString() } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "fcd499d9-3ae0-44ae-a129-79eb4a744fbc",
+      "name": "TG Send",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        3700,
+        180
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'https://api.telegram.org/bot' + $env.TELEGRAM_BOT_TOKEN_JAVIS + '/' + ($json.tg_method || 'sendMessage') }}",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}"
+      }
+    },
+    {
+      "id": "32c1ed5f-ed4d-4d9a-8163-e7b8a0a78bb6",
+      "name": "Is LINE?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2460,
+        -60
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $('Join Identity').first().json.channel }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "rightValue": "line"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b0b49dd2-8a35-4dd5-949e-7f4945efb766",
+      "name": "LINE Loading",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2560,
+        -160
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/chat/loading/start",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ chatId: $('Join Identity').first().json.channel_user_id, loadingSeconds: 30 }) }}"
+      }
+    },
+    {
+      "id": "21639acd-64ed-4c24-bc4c-7917100563b7",
+      "name": "Intent Classify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2150,
+        40
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-haiku-4-5', max_tokens: 60, system: 'จำแนกข้อความผู้ใช้เป็น intent เดียว ตอบ JSON เท่านั้นเช่น {\"intent\":\"qa\"} โดย qa = คำถามหาข้อมูล/ขอความรู้จากคลังเอกสารของทีม, help = ถามวิธีใช้งานบอท/บอททำอะไรได้, smalltalk = ทักทาย ขอบคุณ คุยเล่นไม่ได้หาข้อมูล ถ้าไม่แน่ใจให้ตอบ qa', messages: [{ role: 'user', content: String($json.text || '').slice(0, 500) }] }) }}",
+        "options": {
+          "timeout": 8000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "f0557362-f967-42f5-8062-ad638e9987c5",
+      "name": "Intent Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2300,
+        40
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const src = $('Join Identity').first().json;\nlet intent = 'qa';\ntry {\n  const resp = $input.first().json || {};\n  const t = (resp.content || []).map(b => b.text || '').join('');\n  const m = t.match(/\\{[\\s\\S]*\\}/);\n  if (m) intent = (JSON.parse(m[0]).intent || 'qa');\n} catch (e) { intent = 'qa'; }\nif (!['qa', 'help', 'smalltalk'].includes(intent)) intent = 'qa';\nreturn [{ json: { ...src, intent } }];"
+      }
+    },
+    {
+      "id": "07e87634-71ff-4122-929a-a3ad9c9aecd0",
+      "name": "Intent Router",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2450,
+        40
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "help",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intent }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "help"
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "smalltalk",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intent }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "smalltalk"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      }
+    },
+    {
+      "id": "0f8a5e2f-cacb-4413-9579-5cda05058506",
+      "name": "Msg Canned",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2650,
+        -40
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const text = j.intent === 'help'\n    ? 'ผม Javis ผู้ช่วยคลังความรู้ของทีมครับ 🤖\\nถามได้เลย เช่น\\n• \"Javis มีฟีเจอร์อะไรบ้าง\"\\n• \"branch strategy ของเราเป็นยังไง\"\\n• \"taskbot เก็บข้อมูลอะไรบ้าง\"\\nผมตอบพร้อมอ้างอิงเอกสารเสมอ และจำบทสนทนาต่อเนื่อง ~30 นาทีครับ'\n    : 'ยินดีครับ 🙌 มีอะไรอยากรู้จากคลังความรู้ของทีม ถามได้เลยครับ';\n  if (j.channel === 'telegram' && j.reply_ref && j.reply_ref.telegram_chat_id) {\n    out.push({ json: { channel: 'telegram', tg_method: 'sendMessage', body: JSON.stringify({ chat_id: j.reply_ref.telegram_chat_id, text }) } });\n  } else if (j.reply_ref && j.reply_ref.line_reply_token) {\n    out.push({ json: { kind: 'reply', body: JSON.stringify({ replyToken: j.reply_ref.line_reply_token, messages: [{ type: 'text', text }] }) } });\n  }\n}\nreturn out;"
+      }
+    }
+  ]
+}

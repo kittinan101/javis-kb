@@ -1,0 +1,226 @@
+{
+  "id": "qfYKrBJkXqKUlNyB",
+  "name": "Javis KB - Push files (utility)",
+  "exportedAt": "2026-07-19",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Main Branch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Main Branch": {
+      "main": [
+        [
+          {
+            "node": "Build Tree Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Tree Payload": {
+      "main": [
+        [
+          {
+            "node": "Create Tree",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Tree": {
+      "main": [
+        [
+          {
+            "node": "Create Commit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Commit": {
+      "main": [
+        [
+          {
+            "node": "Update Main Ref",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "a4cdf07f-ec1c-406a-8ff0-869555fab191",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "javis-push-kb"
+      },
+      "webhookId": "a4772962-be3a-49b5-b1e7-e0e2b45fc5d2"
+    },
+    {
+      "id": "ab85314f-524c-4fbc-8e1d-a80374772157",
+      "name": "Get Main Branch",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        460,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/kittinan101/javis-kb/branches/main",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ee9b0610-0fd2-49cd-b852-0e903f9f2955",
+      "name": "Build Tree Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const body = $('Webhook').first().json.body;\nconst parentSha = $json.commit.sha;\nconst parentTreeSha = $json.commit.commit.tree.sha;\nif (!body || !Array.isArray(body.files) || body.files.length === 0) {\n  throw new Error('webhook body.files is required (array of {path, mode?, b64|content})');\n}\nconst tree = body.files.map(f => ({\n  path: f.path,\n  mode: f.mode || '100644',\n  type: 'blob',\n  content: f.b64 ? Buffer.from(f.b64, 'base64').toString('utf8') : (f.content || '')\n}));\n// base_tree keeps all existing files; only listed paths are added/updated.\n// body.base_tree may override (e.g. recovery from a bad commit).\nreturn [{ json: {\n  parentSha,\n  treeBody: JSON.stringify({ base_tree: body.base_tree || parentTreeSha, tree }),\n  message: body.message || 'chore: update kb',\n  fileCount: tree.length\n} }];"
+      }
+    },
+    {
+      "id": "83d39351-0d8a-4dbb-8ba0-8f1b33eaba77",
+      "name": "Create Tree",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        900,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/kittinan101/javis-kb/git/trees",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.treeBody }}"
+      }
+    },
+    {
+      "id": "ff05f6c0-9c7d-42e1-bba0-fee93f68bb5f",
+      "name": "Create Commit",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/kittinan101/javis-kb/git/commits",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ message: $('Build Tree Payload').first().json.message, tree: $json.sha, parents: [$('Build Tree Payload').first().json.parentSha] }) }}"
+      }
+    },
+    {
+      "id": "6ed5d448-b08f-4bd5-a3e7-9288ea90f00c",
+      "name": "Update Main Ref",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1340,
+        300
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "https://api.github.com/repos/kittinan101/javis-kb/git/refs/heads/main",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ sha: $json.sha, force: false }) }}"
+      }
+    },
+    {
+      "id": "7ee8b844-71d2-472c-86af-e38f9a7fa7a0",
+      "name": "Sticky Note 2ebb10af",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        190,
+        250
+      ],
+      "parameters": {
+        "content": "## Javis KB - Push files (utility)\n\nPOST body: { message, files: [{ path, mode?, b64 | content }], base_tree? }\n\nDecodes base64 file contents, then commits ALL files as ONE commit on main via the Git Trees API (kittinan101/javis-kb).\n\nUses base_tree = current HEAD tree by default, so existing files are PRESERVED and only listed paths are added/updated. Pass body.base_tree to override (recovery).\n\nSafe: ref update uses force:false (fast-forward only).",
+        "color": 4,
+        "width": 1400,
+        "height": 200
+      }
+    }
+  ]
+}

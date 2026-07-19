@@ -1,0 +1,201 @@
+{
+  "id": "xFaeFx5SrhYYuesV",
+  "name": "Javis - Utils: Telegram info",
+  "exportedAt": "2026-07-19",
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "GetMe Jarvis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetMe Jarvis": {
+      "main": [
+        [
+          {
+            "node": "GetMe Staging",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetMe Staging": {
+      "main": [
+        [
+          {
+            "node": "GetUpdates Jarvis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetUpdates Jarvis": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Build SetWebhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build SetWebhook": {
+      "main": [
+        [
+          {
+            "node": "Call SetWebhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call SetWebhook": {
+      "main": [
+        [
+          {
+            "node": "Webhook Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "31d84a83-ef89-42be-a0c2-53e473f5ba48",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "4a877662-d5a7-432f-b294-08b7c3e126ef",
+      "name": "GetMe Jarvis",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        480,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://api.telegram.org/bot' + $env.TELEGRAM_BOT_TOKEN_JAVIS + '/getMe' }}"
+      }
+    },
+    {
+      "id": "78c0406b-cc37-4da4-8324-281a0024f339",
+      "name": "GetMe Staging",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        720,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://api.telegram.org/bot' + $env.TELEGRAM_BOT_TOKEN_JAVIS_STAGING + '/getMe' }}"
+      }
+    },
+    {
+      "id": "139af932-bb0d-4264-8569-c24f198919ac",
+      "name": "GetUpdates Jarvis",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        960,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://api.telegram.org/bot' + $env.TELEGRAM_BOT_TOKEN_JAVIS + '/getUpdates?limit=100' }}"
+      }
+    },
+    {
+      "id": "718bc0d3-6a72-4e88-98ec-f1190d70aa0f",
+      "name": "Summarize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const me = $('GetMe Jarvis').first().json.result || {};\nconst st = $('GetMe Staging').first().json.result || {};\nconst upd = $('GetUpdates Jarvis').first().json.result || [];\nconst channels = {};\nfor (const u of upd) {\n  const p = u.channel_post || u.message || u.my_chat_member && u.my_chat_member.chat ? (u.channel_post || u.message || { chat: u.my_chat_member.chat }) : null;\n  if (p && p.chat) channels[p.chat.id] = { id: p.chat.id, type: p.chat.type, title: p.chat.title || p.chat.username || '' };\n}\nreturn [{ json: { main_bot: { id: me.id, username: me.username, name: me.first_name }, staging_bot: { id: st.id, username: st.username, name: st.first_name }, chats_seen: Object.values(channels), updates_count: upd.length } }];"
+      }
+    },
+    {
+      "id": "0c8534a0-78dc-415d-8dc4-9c99d6083c8d",
+      "name": "Build SetWebhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const crypto = require('crypto');\nconst t = $env.TELEGRAM_BOT_TOKEN_JAVIS;\nconst secret = crypto.createHash('sha256').update(t).digest('hex');\nreturn [{ json: { url: 'https://api.telegram.org/bot' + t + '/setWebhook', body: JSON.stringify({ url: 'https://n8n.holmcloud.net/webhook/javis-telegram', secret_token: secret, allowed_updates: ['message', 'callback_query'] }) } }];"
+      }
+    },
+    {
+      "id": "93bd9bc1-8482-4fa2-84a7-70f4560bd7a4",
+      "name": "Call SetWebhook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1680,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}"
+      }
+    },
+    {
+      "id": "1e9e287e-00dc-44ff-8e67-8d546775c8e1",
+      "name": "Webhook Info",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1920,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://api.telegram.org/bot' + $env.TELEGRAM_BOT_TOKEN_JAVIS + '/getWebhookInfo' }}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "BcRwxkgyar1mrKHB",
+  "name": "Javis - Utils: Send alert",
+  "exportedAt": "2026-07-19",
+  "connections": {"Start": {"main": [[{"node": "Get Alert Chat ID", "type": "main", "index": 0}]]}, "Get Alert Chat ID": {"main": [[{"node": "Send Alert", "type": "main", "index": 0}]]}},
+  "nodes": [
+    {"id": "2bfde3b7-ad24-4c74-a683-851449e015bc", "name": "Start", "type": "n8n-nodes-base.manualTrigger", "typeVersion": 1, "position": [240, 300], "parameters": {}},
+    {"id": "a05dea8d-8b99-4bbf-94d3-24a508b38b51", "name": "Get Alert Chat ID", "type": "n8n-nodes-base.postgres", "typeVersion": 2.4, "position": [480, 300], "parameters": {"operation": "executeQuery", "query": "SELECT value AS chat_id FROM system_config WHERE key = 'alert_telegram_chat_id'", "options": {}}, "credentials_note": "postgres: Postgres Javis App"},
+    {"id": "efa0805e-5114-4b57-81d4-fcc6385f078e", "name": "Send Alert", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.4, "position": [720, 300], "parameters": {"method": "POST", "url": "={{ 'https://api.telegram.org/bot' + $env.TELEGRAM_BOT_TOKEN_JAVIS + '/sendMessage' }}", "sendBody": true, "contentType": "json", "specifyBody": "json", "jsonBody": "={{ JSON.stringify({ chat_id: $json.chat_id, text: '🔔 [test] Jarvis alert channel เชื่อมต่อสำเร็จ — ระบบ alert พร้อมใช้งาน' }) }}"}}
+  ]
+}

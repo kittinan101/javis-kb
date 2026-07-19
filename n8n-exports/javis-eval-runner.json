@@ -1,0 +1,405 @@
+{
+  "id": "ThKX1un3jTqG6zxN",
+  "name": "Javis - Eval Runner (T4.2)",
+  "exportedAt": "2026-07-19",
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Get Eval Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Eval Set": {
+      "main": [
+        [
+          {
+            "node": "Get KB Tree",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get KB Tree": {
+      "main": [
+        [
+          {
+            "node": "Pick Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Files": {
+      "main": [
+        [
+          {
+            "node": "Fetch Blob",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Blob": {
+      "main": [
+        [
+          {
+            "node": "KB Docs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "KB Docs": {
+      "main": [
+        [
+          {
+            "node": "Make Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make Cases": {
+      "main": [
+        [
+          {
+            "node": "Ask Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ask Claude": {
+      "main": [
+        [
+          {
+            "node": "Extract Answer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Answer": {
+      "main": [
+        [
+          {
+            "node": "Judge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Judge": {
+      "main": [
+        [
+          {
+            "node": "Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score": {
+      "main": [
+        [
+          {
+            "node": "Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "f3451432-83f3-422c-94e9-b53bc03c6e0b",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "1e5b6fe0-2b0a-4bf3-a7a6-fdb8208da995",
+      "name": "Get Eval Set",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        400,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/kittinan101/javis-kb/contents/eval/qa-set.yaml",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1b34e93c-48bb-4923-84d6-6d1d5b16ef46",
+      "name": "Get KB Tree",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        600,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/kittinan101/javis-kb/git/trees/main?recursive=1",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "6fab28da-298c-4339-bec1-ad95fa5c66e5",
+      "name": "Pick Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const tree = $input.first().json.tree || [];\nconst keep = /^(README\\.md|CONTRIBUTING\\.md|prompts\\/qa-system\\.md|domains\\/.+\\.md|guides\\/.+\\.md|plans\\/.+\\.md|glossary\\/.+\\.md)$/;\nconst files = tree.filter(t => t.type === 'blob' && keep.test(t.path)).sort((a, b) => a.path.localeCompare(b.path));\nif (files.length === 0) throw new Error('no KB files matched');\nreturn files.map(f => ({ json: { path: f.path, url: f.url } }));"
+      }
+    },
+    {
+      "id": "2db26e2f-e277-4588-b9ee-8fc699c1226d",
+      "name": "Fetch Blob",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1000,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "aa3dffd6-15b5-44cc-b12b-4ecdeb16ccfd",
+      "name": "KB Docs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const paths = $('Pick Files').all().map(i => i.json.path);\nconst blobs = $input.all();\nif (paths.length !== blobs.length) throw new Error('path/blob count mismatch');\nlet system_prompt = 'คุณคือ Javis ผู้ช่วยคลังความรู้ของทีม ตอบจากเอกสารเท่านั้น ใช้ citations เสมอ';\nconst documents = [];\nfor (let i = 0; i < paths.length; i++) {\n  const text = Buffer.from((blobs[i].json.content || '').replace(/\\n/g, ''), 'base64').toString('utf8');\n  if (paths[i] === 'prompts/qa-system.md') {\n    const m = text.match(/```([\\s\\S]*?)```/);\n    if (m) system_prompt = m[1].trim();\n    continue;\n  }\n  documents.push({ type: 'document', source: { type: 'text', media_type: 'text/plain', data: text }, title: paths[i], citations: { enabled: true } });\n}\ndocuments[documents.length - 1].cache_control = { type: 'ephemeral' };\nreturn [{ json: { system_prompt, documents } }];"
+      }
+    },
+    {
+      "id": "d8a6a469-082d-4ef2-ba1f-2ed5c1c30d70",
+      "name": "Make Cases",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const text = Buffer.from(($('Get Eval Set').first().json.content || '').replace(/\\n/g, ''), 'base64').toString('utf8');\nlet section = null; const cases = []; let cur = null; let inTurns = false;\nfor (const raw of text.split('\\n')) {\n  const line = raw.replace(/\\r$/, '');\n  if (/^positive:/.test(line)) { section = 'positive'; continue; }\n  if (/^negative:/.test(line)) { section = 'negative'; continue; }\n  if (/^multi_turn:/.test(line)) { section = 'multi_turn'; continue; }\n  if (!section || /^\\s*#/.test(line)) continue;\n  const mQ = line.match(/^  - q: \\\"(.*)\\\"\\s*$/);\n  const mT = line.match(/^  - turns:/);\n  if (mQ) { cur = { type: section, q: mQ[1] }; cases.push(cur); inTurns = false; continue; }\n  if (mT) { cur = { type: section, turns: [] }; cases.push(cur); inTurns = true; continue; }\n  if (!cur) continue;\n  const mTurn = line.match(/^      - \\\"(.*)\\\"\\s*$/);\n  if (inTurns && mTurn) { cur.turns.push(mTurn[1]); continue; }\n  const mArr = line.match(/^    (expect_answer_contains|expect_cite): (\\[.*\\])\\s*$/);\n  if (mArr) { try { cur[mArr[1]] = JSON.parse(mArr[2]); } catch (e) {} continue; }\n  if (/^    expect_no_answer: true/.test(line)) { cur.expect_no_answer = true; continue; }\n  const mNote = line.match(/^    note: \\\"(.*)\\\"\\s*$/);\n  if (mNote) { cur.note = mNote[1]; continue; }\n  const mLang = line.match(/^    lang: (\\w+)/);\n  if (mLang) { cur.lang = mLang[1]; continue; }\n}\nif (cases.length < 20) throw new Error('parsed only ' + cases.length + ' cases — parser broken?');\nreturn cases.map((c, i) => ({ json: { idx: i, ...c, question: c.q || ('คำถามแรก: ' + (c.turns || [])[0] + '\\nคำถามต่อเนื่อง: ' + (c.turns || []).slice(1).join(' / ')) } }));"
+      }
+    },
+    {
+      "id": "9fdefde9-2861-4de9-a4aa-1b0ab763480f",
+      "name": "Ask Claude",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1600,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 2048, output_config: { effort: 'low' }, system: [{ type: 'text', text: $('KB Docs').first().json.system_prompt }], messages: [{ role: 'user', content: $('KB Docs').first().json.documents }, { role: 'assistant', content: 'รับทราบครับ ผมจะตอบจากเอกสารเหล่านี้เท่านั้น' }, { role: 'user', content: 'ใช้ citations ประกอบทุกข้อเท็จจริงเสมอ\\n\\nคำถาม: ' + $json.question }] }) }}",
+        "options": {
+          "timeout": 90000,
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 300
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "6eb0a465-69c5-4d80-bfba-39e9bdde5183",
+      "name": "Extract Answer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1800,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const rows = $input.all(); const out = [];\nfor (let i = 0; i < rows.length; i++) {\n  const c = $('Make Cases').itemMatching(i).json;\n  const resp = rows[i].json || {};\n  let answer = ''; const cites = new Set();\n  for (const b of resp.content || []) if (b.type === 'text') { answer += b.text; for (const ct of b.citations || []) cites.add(ct.document_title); }\n  if (!answer && resp.error) answer = '[API ERROR] ' + JSON.stringify(resp.error).slice(0, 300);\n  const expect = c.type === 'negative'\n    ? 'เคสนี้ KB ไม่มีข้อมูล/เป็นข้อมูลต้องห้าม บอทต้องปฏิเสธหรือบอกว่าไม่พบข้อมูล ห้ามแต่งคำตอบ' + (c.note ? (' — บริบท: ' + c.note) : '')\n    : 'คำตอบต้องครอบคลุมสาระ: ' + JSON.stringify(c.expect_answer_contains || []) + ' และควรอ้างอิงไฟล์: ' + JSON.stringify(c.expect_cite || []);\n  const judge_prompt = 'คุณเป็นกรรมการตรวจคำตอบของบอท Q&A ตอบ JSON เท่านั้นรูปแบบ {\\\"pass\\\":true,\\\"reason\\\":\\\"...\\\"}\\n\\nประเภทเคส: ' + c.type + '\\nคำถาม: ' + c.question + '\\nเกณฑ์ของเคสนี้: ' + expect + '\\n\\nคำตอบของบอท:\\n' + answer.slice(0, 3000) + '\\n\\nไฟล์ที่บอทอ้างอิง: ' + JSON.stringify([...cites]) + '\\n\\nวิธีตัดสิน: positive/multi_turn = สาระถูกครบตามเกณฑ์ (ไม่ต้องตรงคำเป๊ะ ความหมายตรงนับได้) และอ้างอิงไฟล์ที่คาดอย่างน้อย 1 ไฟล์ (ชื่อ path ตรงบางส่วนนับได้) = pass; negative = ปฏิเสธ/บอกไม่พบ/ไม่แต่งข้อมูล = pass, ให้ข้อมูลที่แต่งขึ้น = fail';\n  out.push({ json: { idx: c.idx, type: c.type, question: c.question, answer: answer.slice(0, 1200), cites: [...cites], judge_prompt } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "adbe7298-816f-4176-87e5-917441f0a10b",
+      "name": "Judge",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2000,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 200, system: 'ตอบ JSON เท่านั้น ห้ามมีข้อความอื่น', messages: [{ role: 'user', content: $json.judge_prompt }] }) }}",
+        "options": {
+          "timeout": 30000,
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 200
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "31b1f562-26ab-432c-acbd-8df059fda43e",
+      "name": "Score",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const rows = $input.all(); const out = [];\nfor (let i = 0; i < rows.length; i++) {\n  const c = $('Extract Answer').itemMatching(i).json;\n  const resp = rows[i].json || {};\n  let pass = false, reason = 'judge-parse-error';\n  try {\n    const t = (resp.content || []).map(b => b.text || '').join('');\n    const m = t.match(/\\{[\\s\\S]*\\}/);\n    if (m) { const v = JSON.parse(m[0]); pass = v.pass === true; reason = String(v.reason || '').slice(0, 300); }\n  } catch (e) {}\n  out.push({ json: { idx: c.idx, type: c.type, question: c.question, pass, reason, cites: c.cites } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "228580e5-8d57-47fd-87bb-0b20fa0efc99",
+      "name": "Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const rows = $input.all().map(i => i.json);\nconst byType = {};\nfor (const r of rows) {\n  byType[r.type] = byType[r.type] || { total: 0, pass: 0 };\n  byType[r.type].total++;\n  if (r.pass) byType[r.type].pass++;\n}\nconst total = rows.length;\nconst passed = rows.filter(r => r.pass).length;\nconst failures = rows.filter(r => !r.pass).map(r => ({ idx: r.idx, type: r.type, q: r.question.slice(0, 80), reason: r.reason }));\nreturn [{ json: { accuracy: Math.round(passed / total * 1000) / 10, total, passed, by_type: byType, failures } }];"
+      }
+    }
+  ]
+}

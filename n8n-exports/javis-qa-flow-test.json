@@ -1,0 +1,230 @@
+{
+  "id": "fbSMHTBhvofTXYo3",
+  "name": "Javis - QA Flow (test)",
+  "exportedAt": "2026-07-19",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get KB Tree",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get KB Tree": {
+      "main": [
+        [
+          {
+            "node": "Pick Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Files": {
+      "main": [
+        [
+          {
+            "node": "Fetch Blob",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Blob": {
+      "main": [
+        [
+          {
+            "node": "Build Claude Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Claude Request": {
+      "main": [
+        [
+          {
+            "node": "Call Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Claude": {
+      "main": [
+        [
+          {
+            "node": "Format Answer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "eb5b60d4-b50c-4abd-a0b7-70e7e02c5b97",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "javis-qa-test",
+        "responseMode": "lastNode"
+      },
+      "webhookId": "4765c3a2-275c-4505-b329-a599f67d2e16"
+    },
+    {
+      "id": "ac50b180-eb24-45ec-a7f3-26ae63ee5d06",
+      "name": "Get KB Tree",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/kittinan101/javis-kb/git/trees/main?recursive=1",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1def2c84-495f-4456-8f02-b2b33396057c",
+      "name": "Pick Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// เลือกไฟล์ KB ที่จะส่งเข้า context (ADR-003) — เรียง path แบบ deterministic เพื่อ prompt cache\nconst tree = $input.first().json.tree || [];\nconst keep = /^(README\\.md|CONTRIBUTING\\.md|prompts\\/qa-system\\.md|domains\\/.+\\.md|guides\\/.+\\.md|plans\\/.+\\.md|glossary\\/.+\\.md)$/;\nconst files = tree\n  .filter(t => t.type === 'blob' && keep.test(t.path))\n  .sort((a, b) => a.path.localeCompare(b.path));\nif (files.length === 0) throw new Error('no KB files matched');\nreturn files.map(f => ({ json: { path: f.path, url: f.url } }));"
+      }
+    },
+    {
+      "id": "e3e60701-a21d-4e02-9c32-c3f4e9c1115c",
+      "name": "Fetch Blob",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "5e838d1e-9840-4cc3-b579-2b910fba0c82",
+      "name": "Build Claude Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const paths = $('Pick Files').all().map(i => i.json.path);\nconst blobs = $input.all();\nif (paths.length !== blobs.length) throw new Error('path/blob count mismatch');\nconst question = ($('Webhook').first().json.body || {}).text;\nif (!question) throw new Error('body.text (question) required');\n\nlet systemPrompt = 'คุณคือ Javis ผู้ช่วยคลังความรู้ของทีม ตอบจากเอกสารเท่านั้น ใช้ citations เสมอ';\nconst documents = [];\nfor (let i = 0; i < paths.length; i++) {\n  const raw = blobs[i].json.content || '';\n  const text = Buffer.from(raw.replace(/\\n/g, ''), 'base64').toString('utf8');\n  if (paths[i] === 'prompts/qa-system.md') {\n    const m = text.match(/```([\\s\\S]*?)```/);\n    if (m) systemPrompt = m[1].trim();\n    continue;\n  }\n  documents.push({\n    type: 'document',\n    source: { type: 'text', media_type: 'text/plain', data: text },\n    title: paths[i],\n    citations: { enabled: true }\n  });\n}\n// cache breakpoint ที่ document สุดท้าย — ครอบ system + เอกสารทั้งหมด (ADR-003)\ndocuments[documents.length - 1].cache_control = { type: 'ephemeral' };\n\nconst body = {\n  model: 'claude-sonnet-5',\n  max_tokens: 2048,\n  output_config: { effort: 'low' },\n  system: [{ type: 'text', text: systemPrompt }],\n  messages: [{\n    role: 'user',\n    content: [\n      ...documents,\n      { type: 'text', text: 'ใช้ citations ประกอบทุกข้อเท็จจริงเสมอ\\n\\nคำถาม: ' + question }\n    ]\n  }]\n};\nreturn [{ json: { body: JSON.stringify(body), doc_count: documents.length } }];"
+      }
+    },
+    {
+      "id": "5615ca8f-f92a-46f5-86db-22976bd5e28f",
+      "name": "Call Claude",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "nodeCredentialType": null,
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {
+          "timeout": 90000
+        },
+        "genericAuthType": "httpHeaderAuth"
+      }
+    },
+    {
+      "id": "d5da3cde-d140-42c7-859d-b7cd00c56e5c",
+      "name": "Format Answer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const resp = $input.first().json;\nlet answer = '';\nconst cited = new Set();\nfor (const block of resp.content || []) {\n  if (block.type === 'text') {\n    answer += block.text;\n    for (const c of block.citations || []) cited.add(c.document_title);\n  }\n}\nreturn [{ json: {\n  answer,\n  citations: [...cited],\n  model: resp.model,\n  stop_reason: resp.stop_reason,\n  usage: resp.usage\n} }];"
+      }
+    }
+  ]
+}
