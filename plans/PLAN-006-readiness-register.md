@@ -36,7 +36,7 @@ classification: internal
 | 1.8 | UptimeRobot account (free) monitor webhook + n8n | คุณ (สมัคร) → ผม (ตั้ง monitor) | 15 นาที | P1 T4.4 | ⬜ | ใช้ email ทีมสมัคร |
 | 1.9 | ที่เก็บ pg_dump backup (path บน NAS หรือ cloud) | คุณ (ตัดสินใจ) → ผม (ทำ cron) | ตัดสินใจ 5 นาที | P1 T4.4 → วิกฤตขึ้นตอน P2 เปิดเขียน | ⬜ | แนะนำ: โฟลเดอร์บน NAS คนละ volume กับ Postgres + สำเนาขึ้น cloud รายสัปดาห์ |
 | 1.10 | งานฝั่ง build ที่ผมปิดเองได้ (ไม่ติดใคร): Haiku classifier, role assignment ตอน approve, Reply Formatter, push fallback, eval runner | ผม | 1–2 วันงาน | ก่อนขึ้น P2 | 🔶 | ลำดับ: classifier → role → formatter/fallback → eval runner |
-| 1.11 | สำรอง n8n workflow definitions (export JSON เข้าโฟลเดอร์ `n8n-exports/` ใน repo นี้เป็นระยะ) | ผม | 1 ชม. | disaster recovery ทุก phase | ⬜ | n8n บน NAS คือ single point — ถ้าเครื่องพัง workflow 4 ตัวหายหมด ต้อง rebuild จากความจำ |
+| 1.11 | สำรอง n8n workflow definitions (export JSON เข้าโฟลเดอร์ `n8n-exports/` ใน repo นี้เป็นระยะ) | ผม | 1 ชม. | disaster recovery ทุก phase | ✅ | 2026-07-19: ครบ 7 workflows + README วิธี restore — อัพเดตซ้ำเมื่อ workflow เปลี่ยน version สำคัญ |
 
 ## 2. ต้องพร้อม "ก่อนเริ่ม Phase 2" (Upload + Impact + Figma)
 
@@ -49,7 +49,7 @@ classification: internal
 | 2.5 | SA/ผู้ review impact report (ระบุชื่อ) | คุณ | 5 นาที | P2 T3.2 AC | ⬜ | ถ้าคือคุณเอง ระบุใน Roster ว่า role LEAD_SA |
 | 2.6 | ยืนยัน budget Opus (Impact Analysis ใช้ Opus — แพงกว่า Sonnet ~1.7 เท่า/token) | คุณ | 5 นาที | P2 T3.2 | ⬜ | ประเมินจาก eval: ~0.1–0.3 USD/รายงาน ที่ KB ขนาดปัจจุบัน |
 | 2.7 | **แผนรับมือ KB โต:** เตรียม local clone + volume ให้ n8n เข้าถึง (threshold ADR-003: >50 ไฟล์ หรือ >80k tokens — ตอนนี้ 66.5k แล้ว) | คุณ (สิทธิ์ NAS) + ผม (build) | 1 วัน | กลาง P2 โดยประมาณ | ⬜ | P2 คือ phase ที่เพิ่มไฟล์เข้า KB → ชนแน่ ให้เตรียม volume ไว้ก่อน ไม่รอชนแล้วค่อยทำ |
-| 2.8 | Eval baseline จาก P1 (accuracy > 80% = gate เข้า P2) | ผม (T4.2) + ทีมช่วยตรวจคำตอบ | 1 วัน | gate P2 | ⬜ | ต่อจาก 1.10 |
+| 2.8 | Eval baseline จาก P1 (accuracy > 80% = gate เข้า P2) | ผม (T4.2) + ทีมช่วยตรวจคำตอบ | 1 วัน | gate P2 | 🔶 | 2026-07-19: runner ใช้งานจริง — **baseline 86.7%** บนชุด draft 30 เคส; gate จริงต้องวัดบนชุด ≥50 (เติม eval set ก่อน) |
 | 2.9 | Staging bots: LINE OA ตัวที่ 3 (staging) + Telegram bot ตัวที่ 2 (staging) | คุณ | 30 นาที | P1 T4.3 / ใช้จริงจัง P2+ | 🔶 | Telegram staging ✅ (@jarvis_holm_staging_bot, token ใน env แล้ว) — เหลือ LINE OA staging |
 
 ## 3. ต้องพร้อม "ก่อนเริ่ม Phase 3" (Plan Gen + PDF) — เริ่มเตรียมได้ตั้งแต่ P2
