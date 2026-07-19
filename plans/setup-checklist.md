@@ -16,6 +16,30 @@ classification: internal
 
 > Living document — ทุกครั้งที่ทำ task เสร็จ ให้อัปเดตไฟล์นี้ (ติ๊ก checkbox + ใส่วันที่/หมายเหตุ)
 
+## 🎯 แผนปิด Phase 1 (วางเมื่อ 2026-07-19 — ทำตามลำดับ M1→M3)
+
+**สถานะตั้งต้น:** Q&A ใช้จริง 2 channels + RBAC + eval 86.7% (ชุด 30) | เหลือ: ความเสถียร, eval ครบชุด, เปิดทีม
+
+### M1 — เก็บความเสถียร (ผม, ~1–2 วันงาน, ไม่ติดใคร)
+- [ ] M1.1 Error alert: n8n error workflow ของ gateway → แจ้งเข้า jarvis-alerts เมื่อ execution ล้ม (จะได้ไม่ต้องรอ user บอกว่า "เงียบ")
+- [ ] M1.2 Cost watch: cron รายวัน สรุป cost จาก `audit_logs` + จำนวนคำถาม → ส่งเข้า jarvis-alerts (กันเหตุ credit หมดเงียบซ้ำ)
+- [ ] M1.3 Reply Formatter (T2.5): strip markdown + แบ่งข้อความยาว — ต้องเสร็จก่อนชวนทีมใช้
+- [ ] M1.4 Citation hardening: เข้ม prompt rule 2 แล้ววัดด้วย eval (แก้จุดตกที่เหลือ — เนื้อหาถูกแต่ลืมแนบอ้างอิง)
+
+### M2 — Eval ครบชุด + วัด gate จริง (ผม draft + คุณ/ทีม review ~15 นาที)
+- [ ] M2.1 เติม eval set 30 → ≥50 (positive +13, negative +7 → ≥15, multi-turn +2) — ผม draft จาก KB จริง, ทีมช่วยตรวจว่าคำถามสมจริง
+- [ ] M2.2 รัน eval ชุดเต็ม → **วัด gate Phase 1 (≥80%) อย่างเป็นทางการ** + บันทึกเป็น baseline ถาวร
+- 📏 กติกา eval (~$2/รอบ): รันเฉพาะ (ก) ก่อน deploy การแก้ prompt/retrieval (ข) หลัง KB โต ~10 ไฟล์ (ค) วัด gate — ไม่รันสุ่ม
+
+### M3 — เปิดทีม + ปิด Phase 1 (คุณเป็นหลัก ผม support)
+- [ ] M3.1 Roster สรุปกับทีม (1.3 — เลื่อนได้ตามตกลง แต่เป็นประตูของ M3 ทั้งก้อน)
+- [ ] M3.2 ชวนทีม 2–3 คนแรก register ผ่านปุ่มอนุมัติจริง + ใช้งาน 1 สัปดาห์ + เก็บ feedback (👍👎 มีระบบแล้ว)
+- [ ] M3.3 ทีม review `templates/chat/message-catalog.md` + เติม Wiki stubs ที่ว่าง (ยิ่งเติม accuracy ยิ่งขึ้น)
+- [ ] M3.4 Ops ปิดท้าย: UptimeRobot (1.8), pg_dump backup (รอ decision 1.9), LINE OA staging (2.9)
+- [ ] **DoD Phase 1:** eval ≥80% บนชุด ≥50 ✚ ทีม ≥50% ลองใช้ ✚ ops ครบ → ประกาศปิด phase + เช็ค readiness bucket 2 (P2) ใน PLAN-006
+
+**ค้างฝั่งคุณที่ไม่ผูก milestone:** rotate รหัส Postgres NAS (1.6 ด่วน) · ตั้ง auto-reload/alert เครดิต Anthropic (1.12) · ตัดสินใจที่เก็บ backup (1.9)
+
 ## Phase 1 — Knowledge Base bootstrap ✅ เสร็จ (เหลือ optional 1 ข้อ)
 
 - [x] สร้าง private repo `kittinan101/javis-kb` (2026-07-18, ผ่าน n8n + GitHub PAT)
