@@ -27,7 +27,7 @@ classification: internal
 - [x] M1.4 (2026-07-19) Citation hardening: prompt v2.1 — eval รอบ 6 = 86.7% เท่าเดิม (n=30 เล็กเกินจะชี้ขาด ±1-2 เคส = noise) → คงไว้ + ย้ายการจูนไปหลัง M2 ขยายชุด
 
 ### M2 — Eval ครบชุด + วัด gate จริง (ผม draft + คุณ/ทีม review ~15 นาที)
-- [ ] M2.1 เติม eval set 30 → ≥50 (positive +13, negative +7 → ≥15, multi-turn +2) — ผม draft จาก KB จริง, ทีมช่วยตรวจว่าคำถามสมจริง
+- [x] M2.1 (2026-07-19) เติม eval set 30 → **52** (positive 32 / negative 15 / multi-turn 5 — ครบเกณฑ์ gate) draft จาก KB จริง parser ตรวจผ่าน — **รอคุณ/ทีมกวาดตา 15 นาที** (แก้/ตัดใน eval/qa-set.yaml ได้เลย) แล้วค่อยรัน gate รอบเดียว (~$2.2 — ประหยัดเครดิต)
 - [ ] M2.2 รัน eval ชุดเต็ม → **วัด gate Phase 1 (≥80%) อย่างเป็นทางการ** + บันทึกเป็น baseline ถาวร
 - 📏 กติกา eval (~$2/รอบ): รันเฉพาะ (ก) ก่อน deploy การแก้ prompt/retrieval (ข) หลัง KB โต ~10 ไฟล์ (ค) วัด gate — ไม่รันสุ่ม
 
