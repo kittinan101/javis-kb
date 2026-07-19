@@ -175,7 +175,7 @@ model RateLimitCounter { id String @id @default(cuid()); javisUserId String; win
 
 ### สัปดาห์ 4 — Eval set + Hardening
 
-#### T4.1 Eval set 🔄 (2026-07-18: draft แรก 30 คู่แล้ว — positive 19 + negative 8 + multi-turn 3; เหลือเติมให้ครบ 50 + negative ≥ 15 | 2026-07-19: **T4.2 eval runner ใช้งานจริงแล้ว** — workflow "Javis - Eval Runner" ถาม 30 เคส + LLM-judge อัตโนมัติ; **baseline 86.7%** (positive 19/19, negative 5/8, multi-turn 2/3) ดูรายละเอียด+failures ใน `eval/results-2026-07-19.md`; รอบแรกจับ secret หลุดใน KB ได้จริง 1 รายการ → purge แล้ว)
+#### T4.1 + T4.2 Eval ✅ (2026-07-19: ชุดเต็ม 52 เคส + runner + LLM-judge — **GATE ผ่าน 96.2%** ดู eval/results-2026-07-19.md) 🔄รายละเอียดเดิม: (2026-07-18: draft แรก 30 คู่แล้ว — positive 19 + negative 8 + multi-turn 3; เหลือเติมให้ครบ 50 + negative ≥ 15 | 2026-07-19: **T4.2 eval runner ใช้งานจริงแล้ว** — workflow "Javis - Eval Runner" ถาม 30 เคส + LLM-judge อัตโนมัติ; **baseline 86.7%** (positive 19/19, negative 5/8, multi-turn 2/3) ดูรายละเอียด+failures ใน `eval/results-2026-07-19.md`; รอบแรกจับ secret หลุดใน KB ได้จริง 1 รายการ → purge แล้ว)
 - [x] สร้าง `eval/qa-set.yaml` ใน repo นี้ — เริ่ม ≥ 30 คู่ เพิ่มให้ครบ ≥ 50 ภายใน Phase 1 รูปแบบ:
 ```yaml
 - q: "ขอ flow การ login หน่อย"          # คำถาม (ไทย/อังกฤษปนกัน)

@@ -50,7 +50,7 @@ classification: internal
 | 2.5 | SA/ผู้ review impact report (ระบุชื่อ) | คุณ | 5 นาที | P2 T3.2 AC | ⬜ | ถ้าคือคุณเอง ระบุใน Roster ว่า role LEAD_SA |
 | 2.6 | ยืนยัน budget Opus (Impact Analysis ใช้ Opus — แพงกว่า Sonnet ~1.7 เท่า/token) | คุณ | 5 นาที | P2 T3.2 | ⬜ | ประเมินจาก eval: ~0.1–0.3 USD/รายงาน ที่ KB ขนาดปัจจุบัน |
 | 2.7 | **แผนรับมือ KB โต:** เตรียม local clone + volume ให้ n8n เข้าถึง (threshold ADR-003: >50 ไฟล์ หรือ >80k tokens — ตอนนี้ 66.5k แล้ว) | คุณ (สิทธิ์ NAS) + ผม (build) | 1 วัน | กลาง P2 โดยประมาณ | ⬜ | P2 คือ phase ที่เพิ่มไฟล์เข้า KB → ชนแน่ ให้เตรียม volume ไว้ก่อน ไม่รอชนแล้วค่อยทำ |
-| 2.8 | Eval baseline จาก P1 (accuracy > 80% = gate เข้า P2) | ผม (T4.2) + ทีมช่วยตรวจคำตอบ | 1 วัน | gate P2 | 🔶 | 2026-07-19: runner ใช้งานจริง — **baseline 86.7%** บนชุด draft 30 เคส; gate จริงต้องวัดบนชุด ≥50 (เติม eval set ก่อน) |
+| 2.8 | Eval baseline จาก P1 (accuracy > 80% = gate เข้า P2) | ผม (T4.2) + ทีมช่วยตรวจคำตอบ | 1 วัน | gate P2 | ✅ | 2026-07-19: **GATE ผ่าน 96.2%** บนชุดเต็ม 52 เคส — baseline ถาวร |
 | 2.9 | Staging bots: LINE OA ตัวที่ 3 (staging) + Telegram bot ตัวที่ 2 (staging) | คุณ | 30 นาที | P1 T4.3 / ใช้จริงจัง P2+ | 🔶 | Telegram staging ✅ (@jarvis_holm_staging_bot, token ใน env แล้ว) — เหลือ LINE OA staging |
 
 ## 3. ต้องพร้อม "ก่อนเริ่ม Phase 3" (Plan Gen + PDF) — เริ่มเตรียมได้ตั้งแต่ P2

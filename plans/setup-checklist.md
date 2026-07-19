@@ -28,7 +28,7 @@ classification: internal
 
 ### M2 — Eval ครบชุด + วัด gate จริง (ผม draft + คุณ/ทีม review ~15 นาที)
 - [x] M2.1 (2026-07-19) เติม eval set 30 → **52** (positive 32 / negative 15 / multi-turn 5 — ครบเกณฑ์ gate) draft จาก KB จริง parser ตรวจผ่าน — **รอคุณ/ทีมกวาดตา 15 นาที** (แก้/ตัดใน eval/qa-set.yaml ได้เลย) แล้วค่อยรัน gate รอบเดียว (~$2.2 — ประหยัดเครดิต)
-- [ ] M2.2 รัน eval ชุดเต็ม → **วัด gate Phase 1 (≥80%) อย่างเป็นทางการ** + บันทึกเป็น baseline ถาวร
+- [x] M2.2 (2026-07-19) **GATE ผ่าน: 96.2%** (50/52 — positive 31/32, negative 14/15, multi-turn 5/5) รันรอบเดียวหลัง review ~$2 — baseline ถาวรใน eval/results-2026-07-19.md
 - 📏 กติกา eval (~$2/รอบ): รันเฉพาะ (ก) ก่อน deploy การแก้ prompt/retrieval (ข) หลัง KB โต ~10 ไฟล์ (ค) วัด gate — ไม่รันสุ่ม
 
 ### M3 — เปิดทีม + ปิด Phase 1 (คุณเป็นหลัก ผม support)
@@ -100,6 +100,7 @@ classification: internal
 | 2026-07-18 | 🎉 **F1 Q&A แกนหลักทำงานแล้ว:** credential "Postgres Javis App" เข้า n8n + สร้าง workflow "Javis - QA Flow (test)" ตาม ADR-003 (whole-KB 66.5k tokens ผ่าน GitHub API → claude-sonnet-5 + citations + prompt cache) — ทดสอบผ่านทั้ง positive (6 ฟีเจอร์ + cite ตรง) และ negative (ไม่เดา + อ้าง policy) / cache hit เต็มรอบสอง (9.5 วิ) — **ยังไม่เสียบ gateway จนกว่า T2.3 register/RBAC เสร็จ (กัน KB รั่ว)** — งานถัดไปของ build: dedup จริง + T2.3 |
 | 2026-07-18 | **T2.2 ปิดจ๊อบ:** สลับ dedup placeholder → Postgres จริง (`webhook_events` + xmax trick, SQL พิสูจน์แล้ว insert ซ้ำ → inserted=false) + publish gateway v3 — และ **seed admin**: kittinanonta@gmail.com (ADMIN) ผูก LINE identity (approved) ใน javis_core เตรียม T2.3 — **ยืนยัน E2E: ทัก bot 1 ข้อความแล้วเช็ค row ใน webhook_events** |
 | 2026-07-19 | ⛔ **Incident: Anthropic credit หมด — Javis down ทั้ง 2 channels** (เจอตอน eval รอบ 4 ทุก call ตอบ credit too low) → เพิ่ม register 1.12 เติมเครดิต+ตั้ง alert (ฝั่ง user) + เผยจุดอ่อน T2.5: QA Call Claude fail เงียบเมื่อ API error — จะแก้เป็นข้อความขอโทษ+job_id |
+| 2026-07-19 | 🏆 **M2 จบ — GATE Phase 1 ผ่านอย่างเป็นทางการ 96.2%** (ชุดเต็ม 52 เคส หลังทีม review) — เหลือ M3 (เปิดทีม) อย่างเดียวก่อนประกาศปิด Phase 1 |
 | 2026-07-19 | 🏁 **M1 ครบทั้ง 4 ข้อ:** (1) Error Alert workflow ใหม่ (a0eUNCG7ORnwUdCN, published — เหลือคลิกผูกใน UI: workflow Settings → Error Workflow) (2) Cost Watch cron 09:00 (HVgF45VEhqgQrVOO — test จริงส่งรายงานเข้า jarvis-alerts แล้ว: 3 คำถาม/$0.41) (3) strip markdown ใน QA Msg (v13) (4) prompt v2.1 eval รอบ 6 = 86.7% flat → บทเรียน: n=30 แยกแยะการจูนไม่ได้ ต้องขยายชุดก่อน (M2) |
 | 2026-07-19 | 🛡️ **Failure path (T2.5) เข้า gateway v12:** QA Call Claude เพิ่ม neverError → API ล่ม user ได้ข้อความขอโทษ + job_id แทน fail เงียบ (ไม่แนบปุ่ม feedback ตอน error) — ทดสอบจริงได้ทันทีระหว่างเครดิตหมด |
 | 2026-07-19 | 🧪 **Prompt v2 ผ่าน pre-deploy eval (รอบ 3):** 86.7% เท่า v1 แต่ **negative 8/8 เต็ม** (v1 ได้ 5/8) — hallucination guard สมบูรณ์ แลก positive ตกเป็น 16/19 เรื่อง citation ไม่ครบ (เนื้อหาถูก) → ตัดสินใจใช้ v2; calibrate eval set 2 จุด (cite ทางเลือก, เกณฑ์ semantic) |
