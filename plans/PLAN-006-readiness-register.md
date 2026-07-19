@@ -77,7 +77,19 @@ classification: internal
 | 4.8 | คนรับบท DBA (จาก LEAD_SA) สำหรับ CODEOWNERS `/prisma/migrations/` | คุณ | มาจาก 1.3 | P4 T1.4 | ⬜ | |
 | 4.9 | ค่า `max_budget_per_job_usd` + budget รายเดือน agent | คุณ (ตัดสินใจ) | มาจาก 1.4 | P4 T3.3 kill-switch | ⬜ | ตั้งใน SystemConfig — เปลี่ยนทีหลังได้ |
 
-## 5. คิวตัดสินใจ (Decision Queue) — สรุปเฉพาะที่ต้อง "เลือก" พร้อมค่าแนะนำ
+## 5. หลัง POC ผ่านการนำเสนอ — ย้ายเข้า Environment กลางสำหรับทีม (บริบทจาก user 2026-07-19)
+
+> ทุกอย่างที่รันบน NAS ตอนนี้เป็น **POC ชั่วคราว** — ถ้านำเสนอผ่าน จะเกิดงานย้ายชุดนี้ (ตอนนี้แค่จองรายการไว้ ยังไม่ตัดสินใจอะไร)
+
+| # | สิ่งที่ต้องมี/ทำ | เจ้าของ | หมายเหตุ |
+|---|---|---|---|
+| 5.1 | ตัดสินใจ environment กลาง: เครื่อง/hosting ของทีม (server กลาง, cloud, หรือ NAS องค์กร) | ทีม/องค์กร | รอผลนำเสนอ |
+| 5.2 | ย้าย n8n instance + workflows (มี `n8n-exports/` ครบ 7 ตัวแล้ว — restore ได้) + ผูก credentials ใหม่ | ผม + admin env กลาง | checklist restore อยู่ใน `n8n-exports/README.md` |
+| 5.3 | ย้าย javis_core DB (`pg_dump` → restore; schema reproduce ได้จาก prisma migrations ใน javis-core repo) | ผม | |
+| 5.4 | ชี้ webhook LINE/Telegram ไป URL ใหม่ + rotate secrets/credentials ทุกตัวตอน cutover | ผม + คุณ | โอกาสดีที่จะ rotate ทุกอย่างพร้อมกัน |
+| 5.5 | ตัดสินใจว่า LINE OA / Telegram bot ใช้ตัวเดิมหรือสร้างใหม่ในนามองค์กร | คุณ/ทีม | ตัวเดิมย้ายได้ (แค่เปลี่ยน webhook URL) |
+
+## 6. คิวตัดสินใจ (Decision Queue) — สรุปเฉพาะที่ต้อง "เลือก" พร้อมค่าแนะนำ
 
 | ตัดสินใจเรื่อง | ตัวเลือกแนะนำ (default ถ้าไม่เลือกภายใน phase ที่ใช้) | เกี่ยวกับ |
 |---|---|---|
@@ -88,7 +100,7 @@ classification: internal
 | Claude Code auth บน runner | API key + budget ต่อ job ที่ runner enforce | 4.6 |
 | จังหวะซื้อ Mac mini | สั่งช่วง P2 ถ้าเอามาเป็น PDF host ด้วย (คุ้ม 2 งาน) | 4.1, 3.1 |
 
-## 6. Log การอัพเดต
+## 7. Log การอัพเดต
 
 | วันที่ | รายการ |
 |---|---|
