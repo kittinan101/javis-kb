@@ -88,6 +88,8 @@ classification: internal
 | 5.3 | ย้าย javis_core DB (`pg_dump` → restore; schema reproduce ได้จาก prisma migrations ใน javis-core repo) | ผม | |
 | 5.4 | ชี้ webhook LINE/Telegram ไป URL ใหม่ + rotate secrets/credentials ทุกตัวตอน cutover | ผม + คุณ | โอกาสดีที่จะ rotate ทุกอย่างพร้อมกัน |
 | 5.5 | ตัดสินใจว่า LINE OA / Telegram bot ใช้ตัวเดิมหรือสร้างใหม่ในนามองค์กร | คุณ/ทีม | ตัวเดิมย้ายได้ (แค่เปลี่ยน webhook URL) |
+| 5.6 | **[F7] รายชื่อ code repos จริง (web + API) + สิทธิ์อ่าน** (GitHub PAT/installation ครอบคลุม) | คุณ/ทีม | สำหรับ code-grounded answers + Javis MCP — ดู `features/FEAT-007` |
+| 5.7 | [F7] ตัดสินใจ RBAC ชั้น code (DEVELOPER ขึ้นไป?) + วิธีแจก token MCP ต่อคน | คุณ | ก่อนเปิด Javis MCP ให้ dev ต่อจาก IDE |
 
 ## 6. คิวตัดสินใจ (Decision Queue) — สรุปเฉพาะที่ต้อง "เลือก" พร้อมค่าแนะนำ
 

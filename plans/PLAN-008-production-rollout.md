@@ -67,7 +67,7 @@ classification: internal
 
 | # | งาน | ทำไมบังคับ | แรง |
 |---|---|---|---|
-| G1 | **Targeted retrieval** (local clone + keyword/frontmatter filter ตาม ADR-003) | cost ยั่งยืน + KB เกิน threshold แล้ว | 1–2 วัน |
+| G1 | **Targeted retrieval** (local clone + keyword/frontmatter filter ตาม ADR-003) — **ออกแบบรองรับ multi-repo ตั้งแต่แรก** (KB + source code repos ของ project จริง ตาม features/FEAT-007 — คำตอบเรื่อง code ต้อง ground จาก code จริง) | cost ยั่งยืน + KB เกิน threshold + ปูทาง F7 | 1–2 วัน |
 | G2 | **n8n hardening** (PLAN-002 T1.3 ที่ค้าง): encryption key ใหม่, Postgres backend, export cron | production-grade | 0.5 วัน |
 | G3 | **Backup ครบวงจร**: pg_dump cron + n8n export cron + ทดสอบ restore จริง 1 ครั้ง | ไม่มี backup = ไม่ใช่ production | 0.5 วัน |
 | G4 | **Rotate secrets ทั้งชุดตอน cutover** (LINE, Telegram, Anthropic, DB, GitHub PAT) | POC เคยมี secret ผ่านแชท/history | 0.5 วัน |
