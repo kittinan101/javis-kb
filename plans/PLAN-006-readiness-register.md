@@ -26,13 +26,13 @@ classification: internal
 
 | # | สิ่งที่ต้องมี | เจ้าของ | Lead time | ใช้กับ | สถานะ | หมายเหตุ |
 |---|---|---|---|---|---|---|
-| 1.1 | Telegram bot token (BotFather: `/newbot`) + ชื่อ bot | คุณ | 10 นาที | P1 T3.1 | ⬜ | สร้างแล้ววาง token ใน n8n Credentials — ห้ามส่งผ่านแชท plain ถ้าเลี่ยงได้ (ส่งแล้วให้ rotate ได้) |
+| 1.1 | Telegram bot token (BotFather: `/newbot`) + ชื่อ bot | คุณ | 10 นาที | P1 T3.1 | ✅ | 2026-07-19: @jarvis_holm_bot — token เป็น env var, webhook set + secret แล้ว, gateway v7 รองรับ |
 | 1.2 | บัญชี LINE ที่ 2 (เพื่อนร่วมทีม 1 คน) add @422vjcem แล้วทัก | คุณ/ทีม | 5 นาที | ทดสอบ register/approve E2E | ⬜ | คุณจะได้ปุ่มอนุมัติในแชททันที |
 | 1.3 | **Roster:** รายชื่อทีม + email + role ที่จะให้ (ADMIN/LEAD_SA/PM_PO/QA/DEVELOPER/CONTRIBUTOR/VIEWER) | คุณ | 30 นาที | P1 T1.5 → RBAC ทุก phase | ⬜ | สำคัญที่สุดตัวเดียว — P2 upload, P3 approval, P4 sign-off ล้วนอิง role จากตารางนี้ |
 | 1.4 | Capacity + Budget รายเดือน (Claude API + infra) | คุณ | 30 นาที | P1 T1.5, gate ทุก phase | ⬜ | ใช้ตั้ง alert 80% + `max_budget_per_job_usd` ใน P4 |
 | 1.5 | ทีม review `templates/chat/message-catalog.md` | ทีม | 30 นาที | P1 T1.6 | ⬜ | ไม่ block build แต่ block "ประกาศใช้" |
 | 1.6 | Rotate รหัส Postgres admin (`admin1234`) บน NAS | คุณ | 5 นาที | security debt | ⬜ | รหัสเดิมเคยผ่านแชท — javis_app ไม่ได้ใช้รหัสนี้แล้ว rotate ได้เลยไม่กระทบระบบ |
-| 1.7 | **ช่องทาง alert (#javis-alerts):** ตัดสินใจว่าใช้ LINE group / Telegram channel + สร้าง | คุณ (ตัดสินใจ) → ผม (ต่อ n8n) | 30 นาที | P1 T4.4, P4 kill-switch | ⬜ | ถูกอ้างในหลาย plan แต่ยังไม่มีตัวตนจริง — แนะนำ Telegram channel (bot ส่งเข้า channel ง่าย ไม่กิน LINE quota) |
+| 1.7 | **ช่องทาง alert (#javis-alerts):** ตัดสินใจว่าใช้ LINE group / Telegram channel + สร้าง | คุณ (ตัดสินใจ) → ผม (ต่อ n8n) | 30 นาที | P1 T4.4, P4 kill-switch | 🔶 | 2026-07-19: ช่อง Telegram สร้างแล้ว — เหลือหา chat id: **forward ข้อความจากช่องมาที่ @jarvis_holm_bot** แล้วผมดึง id จาก execution เอง |
 | 1.8 | UptimeRobot account (free) monitor webhook + n8n | คุณ (สมัคร) → ผม (ตั้ง monitor) | 15 นาที | P1 T4.4 | ⬜ | ใช้ email ทีมสมัคร |
 | 1.9 | ที่เก็บ pg_dump backup (path บน NAS หรือ cloud) | คุณ (ตัดสินใจ) → ผม (ทำ cron) | ตัดสินใจ 5 นาที | P1 T4.4 → วิกฤตขึ้นตอน P2 เปิดเขียน | ⬜ | แนะนำ: โฟลเดอร์บน NAS คนละ volume กับ Postgres + สำเนาขึ้น cloud รายสัปดาห์ |
 | 1.10 | งานฝั่ง build ที่ผมปิดเองได้ (ไม่ติดใคร): Haiku classifier, role assignment ตอน approve, Reply Formatter, push fallback, eval runner | ผม | 1–2 วันงาน | ก่อนขึ้น P2 | 🔶 | ลำดับ: classifier → role → formatter/fallback → eval runner |
@@ -50,7 +50,7 @@ classification: internal
 | 2.6 | ยืนยัน budget Opus (Impact Analysis ใช้ Opus — แพงกว่า Sonnet ~1.7 เท่า/token) | คุณ | 5 นาที | P2 T3.2 | ⬜ | ประเมินจาก eval: ~0.1–0.3 USD/รายงาน ที่ KB ขนาดปัจจุบัน |
 | 2.7 | **แผนรับมือ KB โต:** เตรียม local clone + volume ให้ n8n เข้าถึง (threshold ADR-003: >50 ไฟล์ หรือ >80k tokens — ตอนนี้ 66.5k แล้ว) | คุณ (สิทธิ์ NAS) + ผม (build) | 1 วัน | กลาง P2 โดยประมาณ | ⬜ | P2 คือ phase ที่เพิ่มไฟล์เข้า KB → ชนแน่ ให้เตรียม volume ไว้ก่อน ไม่รอชนแล้วค่อยทำ |
 | 2.8 | Eval baseline จาก P1 (accuracy > 80% = gate เข้า P2) | ผม (T4.2) + ทีมช่วยตรวจคำตอบ | 1 วัน | gate P2 | ⬜ | ต่อจาก 1.10 |
-| 2.9 | Staging bots: LINE OA ตัวที่ 3 (staging) + Telegram bot ตัวที่ 2 (staging) | คุณ | 30 นาที | P1 T4.3 / ใช้จริงจัง P2+ | ⬜ | สร้าง OA ใหม่ฟรี — ทำพร้อมกับ 1.1 ได้เลยในรอบเดียว |
+| 2.9 | Staging bots: LINE OA ตัวที่ 3 (staging) + Telegram bot ตัวที่ 2 (staging) | คุณ | 30 นาที | P1 T4.3 / ใช้จริงจัง P2+ | 🔶 | Telegram staging ✅ (@jarvis_holm_staging_bot, token ใน env แล้ว) — เหลือ LINE OA staging |
 
 ## 3. ต้องพร้อม "ก่อนเริ่ม Phase 3" (Plan Gen + PDF) — เริ่มเตรียมได้ตั้งแต่ P2
 
