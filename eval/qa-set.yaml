@@ -126,7 +126,7 @@ multi_turn:
       - "branch strategy ของเราเป็นยังไง"
       - "ขึ้น branch สุดท้ายต้องมีใคร approve บ้าง"
     expect_answer_contains: ["2", "reviewer"]
-    expect_cite: ["domains/javis/overview.md"]
+    expect_cite: ["domains/javis/overview.md", "guides/GUIDE-002-engineering-standards.md", "plans/PLAN-005-phase4-dev-agent.md"]
     lang: th
   - turns:
       - "taskbot ลงทะเบียนผู้ใช้ยังไง"
