@@ -32,7 +32,7 @@ classification: internal
 | 1.4 | Capacity + Budget รายเดือน (Claude API + infra) | คุณ | 30 นาที | P1 T1.5, gate ทุก phase | ⬜ | ใช้ตั้ง alert 80% + `max_budget_per_job_usd` ใน P4 |
 | 1.5 | ทีม review `templates/chat/message-catalog.md` | ทีม | 30 นาที | P1 T1.6 | ⬜ | ไม่ block build แต่ block "ประกาศใช้" |
 | 1.6 | Rotate รหัส Postgres admin (`admin1234`) บน NAS | คุณ | 5 นาที | security debt | ⬜ | รหัสเดิมเคยผ่านแชท — javis_app ไม่ได้ใช้รหัสนี้แล้ว rotate ได้เลยไม่กระทบระบบ |
-| 1.7 | **ช่องทาง alert (#javis-alerts):** ตัดสินใจว่าใช้ LINE group / Telegram channel + สร้าง | คุณ (ตัดสินใจ) → ผม (ต่อ n8n) | 30 นาที | P1 T4.4, P4 kill-switch | 🔶 | 2026-07-19: ช่อง Telegram สร้างแล้ว — เหลือหา chat id: **forward ข้อความจากช่องมาที่ @jarvis_holm_bot** แล้วผมดึง id จาก execution เอง |
+| 1.7 | **ช่องทาง alert (#javis-alerts):** ตัดสินใจว่าใช้ LINE group / Telegram channel + สร้าง | คุณ (ตัดสินใจ) → ผม (ต่อ n8n) | 30 นาที | P1 T4.4, P4 kill-switch | ✅ | 2026-07-19: ช่อง Telegram "jarvis-alerts" — chat id เก็บใน `system_config.alert_telegram_chat_id`, workflow "Javis - Utils: Send alert" ทดสอบส่งสำเร็จ |
 | 1.8 | UptimeRobot account (free) monitor webhook + n8n | คุณ (สมัคร) → ผม (ตั้ง monitor) | 15 นาที | P1 T4.4 | ⬜ | ใช้ email ทีมสมัคร |
 | 1.9 | ที่เก็บ pg_dump backup (path บน NAS หรือ cloud) | คุณ (ตัดสินใจ) → ผม (ทำ cron) | ตัดสินใจ 5 นาที | P1 T4.4 → วิกฤตขึ้นตอน P2 เปิดเขียน | ⬜ | แนะนำ: โฟลเดอร์บน NAS คนละ volume กับ Postgres + สำเนาขึ้น cloud รายสัปดาห์ |
 | 1.10 | งานฝั่ง build ที่ผมปิดเองได้ (ไม่ติดใคร): Haiku classifier, role assignment ตอน approve, Reply Formatter, push fallback, eval runner | ผม | 1–2 วันงาน | ก่อนขึ้น P2 | 🔶 | ลำดับ: classifier → role → formatter/fallback → eval runner |
