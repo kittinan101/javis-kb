@@ -21,10 +21,10 @@ classification: internal
 **สถานะตั้งต้น:** Q&A ใช้จริง 2 channels + RBAC + eval 86.7% (ชุด 30) | เหลือ: ความเสถียร, eval ครบชุด, เปิดทีม
 
 ### M1 — เก็บความเสถียร (ผม, ~1–2 วันงาน, ไม่ติดใคร)
-- [ ] M1.1 Error alert: n8n error workflow ของ gateway → แจ้งเข้า jarvis-alerts เมื่อ execution ล้ม (จะได้ไม่ต้องรอ user บอกว่า "เงียบ")
-- [ ] M1.2 Cost watch: cron รายวัน สรุป cost จาก `audit_logs` + จำนวนคำถาม → ส่งเข้า jarvis-alerts (กันเหตุ credit หมดเงียบซ้ำ)
-- [ ] M1.3 Reply Formatter (T2.5): strip markdown + แบ่งข้อความยาว — ต้องเสร็จก่อนชวนทีมใช้
-- [ ] M1.4 Citation hardening: เข้ม prompt rule 2 แล้ววัดด้วย eval (แก้จุดตกที่เหลือ — เนื้อหาถูกแต่ลืมแนบอ้างอิง)
+- [x] M1.1 (2026-07-19) Error alert: n8n error workflow ของ gateway → แจ้งเข้า jarvis-alerts เมื่อ execution ล้ม (จะได้ไม่ต้องรอ user บอกว่า "เงียบ")
+- [x] M1.2 (2026-07-19) Cost watch: cron รายวัน สรุป cost จาก `audit_logs` + จำนวนคำถาม → ส่งเข้า jarvis-alerts (กันเหตุ credit หมดเงียบซ้ำ)
+- [x] M1.3 (2026-07-19) Reply Formatter: strip markdown (bold/heading/code/link/bullet→•) ใน QA Msg (gateway v13) — ความยาว cap 3900 มีอยู่แล้ว
+- [x] M1.4 (2026-07-19) Citation hardening: prompt v2.1 — eval รอบ 6 = 86.7% เท่าเดิม (n=30 เล็กเกินจะชี้ขาด ±1-2 เคส = noise) → คงไว้ + ย้ายการจูนไปหลัง M2 ขยายชุด
 
 ### M2 — Eval ครบชุด + วัด gate จริง (ผม draft + คุณ/ทีม review ~15 นาที)
 - [ ] M2.1 เติม eval set 30 → ≥50 (positive +13, negative +7 → ≥15, multi-turn +2) — ผม draft จาก KB จริง, ทีมช่วยตรวจว่าคำถามสมจริง
@@ -100,6 +100,7 @@ classification: internal
 | 2026-07-18 | 🎉 **F1 Q&A แกนหลักทำงานแล้ว:** credential "Postgres Javis App" เข้า n8n + สร้าง workflow "Javis - QA Flow (test)" ตาม ADR-003 (whole-KB 66.5k tokens ผ่าน GitHub API → claude-sonnet-5 + citations + prompt cache) — ทดสอบผ่านทั้ง positive (6 ฟีเจอร์ + cite ตรง) และ negative (ไม่เดา + อ้าง policy) / cache hit เต็มรอบสอง (9.5 วิ) — **ยังไม่เสียบ gateway จนกว่า T2.3 register/RBAC เสร็จ (กัน KB รั่ว)** — งานถัดไปของ build: dedup จริง + T2.3 |
 | 2026-07-18 | **T2.2 ปิดจ๊อบ:** สลับ dedup placeholder → Postgres จริง (`webhook_events` + xmax trick, SQL พิสูจน์แล้ว insert ซ้ำ → inserted=false) + publish gateway v3 — และ **seed admin**: kittinanonta@gmail.com (ADMIN) ผูก LINE identity (approved) ใน javis_core เตรียม T2.3 — **ยืนยัน E2E: ทัก bot 1 ข้อความแล้วเช็ค row ใน webhook_events** |
 | 2026-07-19 | ⛔ **Incident: Anthropic credit หมด — Javis down ทั้ง 2 channels** (เจอตอน eval รอบ 4 ทุก call ตอบ credit too low) → เพิ่ม register 1.12 เติมเครดิต+ตั้ง alert (ฝั่ง user) + เผยจุดอ่อน T2.5: QA Call Claude fail เงียบเมื่อ API error — จะแก้เป็นข้อความขอโทษ+job_id |
+| 2026-07-19 | 🏁 **M1 ครบทั้ง 4 ข้อ:** (1) Error Alert workflow ใหม่ (a0eUNCG7ORnwUdCN, published — เหลือคลิกผูกใน UI: workflow Settings → Error Workflow) (2) Cost Watch cron 09:00 (HVgF45VEhqgQrVOO — test จริงส่งรายงานเข้า jarvis-alerts แล้ว: 3 คำถาม/$0.41) (3) strip markdown ใน QA Msg (v13) (4) prompt v2.1 eval รอบ 6 = 86.7% flat → บทเรียน: n=30 แยกแยะการจูนไม่ได้ ต้องขยายชุดก่อน (M2) |
 | 2026-07-19 | 🛡️ **Failure path (T2.5) เข้า gateway v12:** QA Call Claude เพิ่ม neverError → API ล่ม user ได้ข้อความขอโทษ + job_id แทน fail เงียบ (ไม่แนบปุ่ม feedback ตอน error) — ทดสอบจริงได้ทันทีระหว่างเครดิตหมด |
 | 2026-07-19 | 🧪 **Prompt v2 ผ่าน pre-deploy eval (รอบ 3):** 86.7% เท่า v1 แต่ **negative 8/8 เต็ม** (v1 ได้ 5/8) — hallucination guard สมบูรณ์ แลก positive ตกเป็น 16/19 เรื่อง citation ไม่ครบ (เนื้อหาถูก) → ตัดสินใจใช้ v2; calibrate eval set 2 จุด (cite ทางเลือก, เกณฑ์ semantic) |
 | 2026-07-19 | 📊 **Eval runner (T4.2) ใช้งานจริง + baseline 86.7%:** workflow "Javis - Eval Runner" ถาม 30 เคส + LLM-judge → รอบ 1 = 73.3% และ**จับ security leak จริง**: รหัส Postgres admin เคยหลุดดิบใน PLAN-006 (ฝีมือผมเอง, gitleaks ไม่จับเพราะเป็นคำธรรมดา) → purge (`729c49a`) + ยกระดับ 1.6 rotate เป็นด่วน; แก้ judge max_tokens + ขยาย expect_cite → รอบ 2 = **86.7%** (positive 19/19) — failures ที่เหลือชี้ทาง prompt v2 (แยกแผน/ของจริง) ดู `eval/results-2026-07-19.md` |
