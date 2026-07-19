@@ -65,7 +65,11 @@ classification: internal
 
 กติกา: workflow ของ Javis ห้ามแตะ credential/webhook ของ Holmcloud และกลับกัน — channel secret ก็แยก env คนละตัว (`LINE_CHANNEL_SECRET_HOLM_AGENTS` สำหรับ Javis)
 
-## แผนงานเต็มทุก Phase — ดู PLAN-001 ถึง PLAN-005
+## แผนงานเต็มทุก Phase — ดู PLAN-001 ถึง PLAN-008
+
+> 2026-07-19: เพิ่ม 2 แผนตามบริบท POC (user สั่งแยกแผนนำเสนอ/ใช้จริง):
+> - [PLAN-007 — แผนนำเสนอ POC](PLAN-007-demo-presentation.md) (demo script, ตัวเลขขาย, เตรียมวันนำเสนอ, นิยามผ่าน)
+> - [PLAN-008 — แผนใช้งานจริง](PLAN-008-production-rollout.md) (cost จากตัวเลขวัดจริง: ~$180/เดือน → ~$50 หลัง targeted retrieval, สเปก env กลาง, gap 8 ข้อ, แผนย้าย ~1.5 สัปดาห์)
 
 > 2026-07-18: ออกแบบ plan ล่วงหน้าครบทุก step แล้ว — task breakdown เต็มอยู่ในไฟล์เหล่านี้:
 
