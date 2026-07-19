@@ -35,9 +35,9 @@ classification: internal
 | 1.7 | **ช่องทาง alert (#javis-alerts):** ตัดสินใจว่าใช้ LINE group / Telegram channel + สร้าง | คุณ (ตัดสินใจ) → ผม (ต่อ n8n) | 30 นาที | P1 T4.4, P4 kill-switch | ✅ | 2026-07-19: ช่อง Telegram "jarvis-alerts" — chat id เก็บใน `system_config.alert_telegram_chat_id`, workflow "Javis - Utils: Send alert" ทดสอบส่งสำเร็จ |
 | 1.8 | UptimeRobot account (free) monitor webhook + n8n | คุณ (สมัคร) → ผม (ตั้ง monitor) | 15 นาที | P1 T4.4 | ⬜ | ใช้ email ทีมสมัคร |
 | 1.9 | ที่เก็บ pg_dump backup (path บน NAS หรือ cloud) | คุณ (ตัดสินใจ) → ผม (ทำ cron) | ตัดสินใจ 5 นาที | P1 T4.4 → วิกฤตขึ้นตอน P2 เปิดเขียน | ⬜ | แนะนำ: โฟลเดอร์บน NAS คนละ volume กับ Postgres + สำเนาขึ้น cloud รายสัปดาห์ |
-| 1.10 | งานฝั่ง build ที่ผมปิดเองได้ (ไม่ติดใคร): Haiku classifier, role assignment ตอน approve, Reply Formatter, push fallback, eval runner | ผม | 1–2 วันงาน | ก่อนขึ้น P2 | 🔶 | ลำดับ: classifier → role → formatter/fallback → eval runner |
+| 1.10 | งานฝั่ง build ที่ผมปิดเองได้ (classifier, role assignment, formatter, push fallback, eval runner) | ผม | 1–2 วันงาน | ก่อนขึ้น P2 | ✅ | 2026-07-19: ครบทุกตัวยกเว้น push fallback (ยังไม่จำเป็น — Q&A ตอบทัน reply token ตลอด; ทำเมื่อเจอ timeout จริงหรือก่อน Impact Analysis ใน P2) |
 | 1.11 | สำรอง n8n workflow definitions (export JSON เข้าโฟลเดอร์ `n8n-exports/` ใน repo นี้เป็นระยะ) | ผม | 1 ชม. | disaster recovery ทุก phase | ✅ | 2026-07-19: ครบ 7 workflows + README วิธี restore — อัพเดตซ้ำเมื่อ workflow เปลี่ยน version สำคัญ |
-| 1.12 | ⛔ **เติม Anthropic API credits + ตั้ง auto-reload/alert ยอดเครดิต** | คุณ | 10 นาที | **Javis down อยู่ตอนนี้** | ⛔ | 2026-07-19: เครดิตหมดระหว่างรัน eval — Q&A ทั้ง LINE/Telegram ใช้ไม่ได้จนกว่าจะเติม (console.anthropic.com → Plans & Billing) — แนะนำเปิด auto-reload + ตั้ง alert; ฝั่งผมจะเพิ่ม error message ให้ user แทน fail เงียบ (T2.5) |
+| 1.12 | เติม Anthropic API credits + ตั้ง auto-reload/alert ยอดเครดิต | คุณ | 10 นาที | ทุก phase | 🔶 | 2026-07-19: เติมแล้ว ระบบกลับมาปกติ — **เหลือตั้ง auto-reload/alert ใน console** กันเกิดซ้ำ; ฝั่งระบบมี Cost Watch รายวัน + error message แทน fail เงียบแล้ว |
 
 ## 2. ต้องพร้อม "ก่อนเริ่ม Phase 2" (Upload + Impact + Figma)
 
